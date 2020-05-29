@@ -259,6 +259,9 @@ def non_zero_channels(tensor):
         raise ValueError("Expecting a 4D tensor")
 
     norms = distiller.norms.channels_lp_norm(tensor, p=1)
+    
+    # print("non_zero_channels norms: ", norms)
+    
     nonzero_channels = torch.nonzero(norms)
     return nonzero_channels
 
@@ -568,6 +571,9 @@ def has_children(module):
 def _validate_input_shape(dataset, input_shape):
     if dataset:
         try:
+            print(dataset)
+            print("distiller.apputils.classification_get_input_shape(dataset): ", tuple(distiller.apputils.classification_get_input_shape(dataset)))
+            
             return tuple(distiller.apputils.classification_get_input_shape(dataset))
         except ValueError:
             raise ValueError("Can't infer input shape for dataset {}, please pass shape directly".format(dataset))
@@ -611,7 +617,10 @@ def get_dummy_input(dataset=None, device=None, input_shape=None):
             return create_single(shape)
         return tuple(create_recurse(s) for s in shape)
 
+    print("input_shape: ", input_shape)
     input_shape = _validate_input_shape(dataset, input_shape)
+
+    
     return create_recurse(input_shape)
 
 

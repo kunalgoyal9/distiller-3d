@@ -54,8 +54,16 @@ class ClassifierCompressor(object):
         - Classifier training, verification and testing
     """
     def __init__(self, args, script_dir):
+
+        # print("args: ",args.dataset)
+
         self.args = copy.deepcopy(args)
+
+
         self._infer_implicit_args(self.args)
+
+        print("__init__ self.args.dataset: ",self.args.dataset)
+
         self.logdir = _init_logger(self.args, script_dir)
         _config_determinism(self.args)
         _config_compute_device(self.args)
@@ -76,9 +84,15 @@ class ClassifierCompressor(object):
         self.activations_collectors = create_activation_stats_collectors(
             self.model, *self.args.activation_stats)
         self.performance_tracker = apputils.SparsityAccuracyTracker(self.args.num_best_scores)
-    
+
+        print("__init__ self.args.dataset: ",self.args.dataset)
+
     def load_datasets(self):
+
         """Load the datasets"""
+
+        # print("args.dataset1: ", self.args.dataset)
+
         if not all((self.train_loader, self.val_loader, self.test_loader)):
             self.train_loader, self.val_loader, self.test_loader = load_data(self.args)
         return self.data_loaders
@@ -171,12 +185,16 @@ class ClassifierCompressor(object):
 
     def run_training_loop(self):
         """Run the main training loop with compression.
+    
 
         For each epoch:
             train_one_epoch
             validate_one_epoch
             finalize_epoch
         """
+
+        # print("args.dataset2: ", self.args.dataset)
+
         if self.start_epoch >= self.ending_epoch:
             msglogger.error(
                 'epoch count is too low, starting epoch is {} but total epochs set to {}'.format(
@@ -187,10 +205,12 @@ class ClassifierCompressor(object):
         self.load_datasets()
 
         self.performance_tracker.reset()
+
         for epoch in range(self.start_epoch, self.ending_epoch):
             msglogger.info('\n')
             top1, top5, loss = self.train_validate_with_scheduling(epoch)
             self._finalize_epoch(epoch, top1, top5)
+
         return self.performance_tracker.perf_scores_history
 
     def validate(self, epoch=-1):
@@ -382,6 +402,10 @@ def _init_learner(args):
     # Create the model
     model = create_model(args.pretrained, args.dataset, args.arch,
                          parallel=not args.load_serialized, device_ids=args.gpus)
+    # print("_init_learner called: ")
+    
+    # print(model)
+    
     compression_scheduler = None
 
     # TODO(barrh): args.deprecated_resume is deprecated since v0.3.1
@@ -416,6 +440,7 @@ def _init_learner(args):
         # requires a compression schedule configuration file in YAML.
         compression_scheduler = distiller.file_config(model, optimizer, args.compress, compression_scheduler,
             (start_epoch-1) if args.resumed_checkpoint_path else None)
+        print("compression_scheduler", compression_scheduler)
         # Model is re-transferred to GPU in case parameters were added (e.g. PACTQuantizer)
         model.to(args.device)
     elif compression_scheduler is None:
@@ -471,7 +496,9 @@ def save_collectors_data(collectors, directory):
 
 def load_data(args, fixed_subset=False, sequential=False, load_train=True, load_val=True, load_test=True):
     test_only = not load_train and not load_val
-
+    
+    # print("args: ",  args)
+    
     train_loader, val_loader, test_loader, _ = apputils.load_data(args.dataset,
                               os.path.expanduser(args.data), args.batch_size,
                               args.workers, args.validation_split, args.deterministic,
@@ -561,12 +588,21 @@ def train(train_loader, model, criterion, optimizer, epoch,
     msglogger.info('Training epoch: %d samples (%d per mini-batch)', total_samples, batch_size)
 
     # Switch to train mode
+    
+    # print(model)
+
+    # for mod_name, m in model.named_modules():
+        # print("mod_name: ", mod_name)
+
+
+
     model.train()
     acc_stats = []
     end = time.time()
     for train_step, (inputs, target) in enumerate(train_loader):
         # Measure data loading time
         data_time.add(time.time() - end)
+        # print("compression_scheduler: ", args.device)
         inputs, target = inputs.to(args.device), target.to(args.device)
 
         # Execute the forward phase, compute the output and measure loss

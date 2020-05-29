@@ -7,6 +7,7 @@
 #
 # time python3 compress_classifier.py -a=resnet56_cifar -p=50 ../../../data.cifar10 --epochs=70 --lr=0.1 --compress=../pruning_filters_for_efficient_convnets/resnet56_cifar_channel_rank.yaml --resume-from=checkpoint.resnet56_cifar_baseline.pth.tar --reset-optimizer --vs=0
 #
+
 # Baseline results:
 #     Top1: 92.850    Top5: 99.780    Loss: 0.464
 #     Parameters: 851,504
@@ -153,7 +154,7 @@ extensions:
       class: StructureRemover
       thinning_func_str: remove_channels
       arch: resnet56_cifar
-      dataset: cifar10
+      dataset: ucf101
 
 lr_schedulers:
    exp_finetuning_lr:

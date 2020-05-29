@@ -212,6 +212,9 @@ def create_thinning_recipe_channels(sgraph, model, zeros_mask_dict):
 
         # Find all instances of Convolution layers that immediately precede this layer
         predecessors = sgraph.predecessors_f(layer_name, ['Conv'])
+
+        # print("predecessors for ", layer_name, " are ", predecessors) 
+
         if not predecessors:
             msglogger.info("Could not find predecessors for name=%s" % layer_name)
         for predecessor in predecessors:
@@ -257,9 +260,16 @@ def create_thinning_recipe_channels(sgraph, model, zeros_mask_dict):
 
     # Traverse all of the model's parameters, search for zero-channels, and
     # create a thinning recipe that descibes the required changes to the model.
+    # print("layers: ", layers)
     for layer_name, param_name, param in sgraph.named_params_layers():
+        
+        print("sgraph param dim: ", param_name, param.dim())
+        
         if param.dim() in (2, 4):
             num_channels = param.size(1)
+            
+            print("num_channels: ", num_channels)
+
             # Find nonzero input channels
             if param.dim() == 2:
                 # 2D weights (of Linear layers)
@@ -270,6 +280,8 @@ def create_thinning_recipe_channels(sgraph, model, zeros_mask_dict):
                 # 4D weights (of Convolution layers)
                 nonzero_channels = distiller.non_zero_channels(param)
                 num_nnz_channels = nonzero_channels.nelement()
+                print("nonzero_channels: ", num_nnz_channels)
+                
             if num_nnz_channels == 0:
                 raise ValueError("Trying to zero all channels for parameter %s is not allowed" % param_name)
 

@@ -47,6 +47,7 @@ class ScheduledTrainingPolicy(object):
         self.layers = layers
 
     def on_epoch_begin(self, model, zeros_mask_dict, meta, **kwargs):
+        # print("policy on_epoch_begin")
         """A new epcoh is about to begin"""
         pass
 
@@ -87,6 +88,8 @@ class PruningPolicy(ScheduledTrainingPolicy):
     """Base class for pruning policies.
     """
     def __init__(self, pruner, pruner_args, classes=None, layers=None):
+
+        # print("pruner_args: ", pruner_args)
         """
         Arguments:
             mask_on_forward_only: controls what we do after the weights are updated by the backward pass.
@@ -224,8 +227,17 @@ class PruningPolicy(ScheduledTrainingPolicy):
             # Because we skipped the first mini-batch of the first epoch (global_mini_batch_id == 0)
             set_masks = True
 
+        # if set_masks == True:
+            # print("minibatch_id: ", minibatch_id)
+            # print("self.mini_batch_pruning_frequency: ", self.mini_batch_pruning_frequency)
+            # print("global_mini_batch_id: ", global_mini_batch_id)
+        
+        # print("zeros_mask_dict: ", zeros_mask_dict)
+
         for param_name, param in model.named_parameters():
+            # print("pram_name: ", set_masks)
             if set_masks:
+                # print("fold_bn is true :-)")
                 if self.fold_bn:
                     param = self._fold_batchnorm(model, param_name, param, self.named_modules, self.sg)
                 self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)

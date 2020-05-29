@@ -36,8 +36,11 @@ def setup_test(arch, dataset, parallel):
     # Create the masks
     zeros_mask_dict = {}
     for name, param in model.named_parameters():
+        # print("name :", name)
         masker = distiller.ParameterMasker(name)
         zeros_mask_dict[name] = masker
+
+    # print("model: ", model, "dict: ", zeros_mask_dict)
     return model, zeros_mask_dict
 
 

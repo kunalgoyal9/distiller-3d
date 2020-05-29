@@ -56,6 +56,9 @@ def dict_config(model, optimizer, sched_dict, scheduler=None, resumed_epoch=None
         scheduler = distiller.CompressionScheduler(model)
 
     pruners = __factory('pruners', model, sched_dict)
+
+    # print("pruners: ", pruners)
+
     regularizers = __factory('regularizers', model, sched_dict)
     quantizers = __factory('quantizers', model, sched_dict, optimizer=optimizer)
     if len(quantizers) > 1:
@@ -65,6 +68,7 @@ def dict_config(model, optimizer, sched_dict, scheduler=None, resumed_epoch=None
     try:
         lr_policies = []
         for policy_def in sched_dict['policies']:
+            # print("policy_def ", policy_def)
             policy = None
             if 'pruner' in policy_def:
                 try:
@@ -73,6 +77,8 @@ def dict_config(model, optimizer, sched_dict, scheduler=None, resumed_epoch=None
                     print('\n\nFatal Error: a policy is defined with a null pruner')
                     print('Here\'s the policy definition for your reference:\n{}'.format(json.dumps(policy_def, indent=1)))
                     raise
+
+                # print("args: ", args)
                 assert instance_name in pruners, "Pruner {} was not defined in the list of pruners".format(instance_name)
                 pruner = pruners[instance_name]
                 policy = distiller.PruningPolicy(pruner, args)
@@ -103,6 +109,7 @@ def dict_config(model, optimizer, sched_dict, scheduler=None, resumed_epoch=None
                 assert instance_name in extensions, "Extension {} was not defined in the list of extensions".format(instance_name)
                 extension = extensions[instance_name]
                 policy = extension
+                # print("dict extension policy: ", policy)
 
             else:
                 raise ValueError("\nFATAL Parsing error while parsing the pruning schedule - unknown policy [%s]".format(policy_def))
@@ -173,9 +180,11 @@ def config_component_from_file_by_class(model, filename, class_name, **extra_arg
 
 
 def __factory(container_type, model, sched_dict, **extra_args):
+    # print("sched_dict: ", sched_dict)
     container = {}
     if container_type in sched_dict:
         for name, user_args in sched_dict[container_type].items():
+            # print("_factory user_args: ", user_args)
             try:
                 instance = build_component(model, name, user_args, **extra_args)
                 container[name] = instance
@@ -207,6 +216,9 @@ def build_component(model, name, user_args, **extra_args):
     valid_args['model'] = model
     valid_args['name'] = name
     final_valid_args, _ = filter_kwargs(valid_args, class_.__init__)
+
+    # print("class_", class_)
+
     instance = class_(**final_valid_args)
     return instance
 

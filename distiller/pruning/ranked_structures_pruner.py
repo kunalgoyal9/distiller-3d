@@ -167,6 +167,7 @@ class LpRankedStructureParameterPruner(_RankedStructureParameterPruner):
                                model=None, binary_map=None, magnitude_fn=distiller.norms.l1_norm,
                                noise=0.0, group_size=1, rounding_fn=math.floor):
         assert param.dim() == 4 or param.dim() == 3, "This pruning is only supported for 3D and 4D weights"
+        print("param.dim(): ", param.dim())
         if binary_map is None:
             bottomk_filters, filter_mags = distiller.norms.rank_filters(param, group_size, magnitude_fn,
                                                                         fraction_to_prune, rounding_fn, noise)

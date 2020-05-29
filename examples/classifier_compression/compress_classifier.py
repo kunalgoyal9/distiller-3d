@@ -74,6 +74,9 @@ def main():
     app = ClassifierCompressorSampleApp(args, script_dir=os.path.dirname(__file__))
     if app.handle_subapps():
         return
+
+    
+
     init_knowledge_distillation(app.args, app.model, app.compression_scheduler)
     app.run_training_loop()
     # Finally run results on the test set
@@ -84,7 +87,7 @@ def handle_subapps(model, criterion, optimizer, compression_scheduler, pylogger,
     def load_test_data(args):
         test_loader = classifier.load_data(args, load_train=False, load_val=False, load_test=True)
         return test_loader
-
+    
     do_exit = False
     if args.greedy:
         greedy(model, criterion, optimizer, pylogger, args)

@@ -34,7 +34,7 @@ from distiller.modules import Mean, EltwiseAdd
 import logging
 msglogger = logging.getLogger()
 
-SUPPORTED_DATASETS = ('imagenet', 'cifar10', 'mnist')
+SUPPORTED_DATASETS = ('imagenet', 'cifar10', 'mnist', 'ucf101')
 
 # ResNet special treatment: we have our own version of ResNet, so we need to over-ride
 # TorchVision's version.
@@ -62,6 +62,78 @@ MNIST_MODEL_NAMES = sorted(name for name in mnist_models.__dict__
 
 ALL_MODEL_NAMES = sorted(map(lambda s: s.lower(),
                             set(IMAGENET_MODEL_NAMES + CIFAR10_MODEL_NAMES + MNIST_MODEL_NAMES)))
+
+ALL_MODEL_NAMES.append("c3d_ucf101")
+
+# print("ALL: ", ALL_MODEL_NAMES)
+
+# print()
+
+class C3D(nn.Module):
+    """
+    The C3D network as described in [1].
+    """
+
+    def __init__(self):
+        super(C3D, self).__init__()
+
+        self.features = nn.Sequential(
+            nn.Conv3d(3, 64, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
+            nn.ReLU(),            
+            nn.MaxPool3d(kernel_size=(1, 2, 2), stride=(1, 2, 2)),
+            
+            nn.Conv3d(64, 128, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
+            nn.ReLU(),            
+            nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2)),
+            
+            nn.Conv3d(128, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
+            nn.ReLU(),            
+            nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
+            nn.ReLU(),            
+            nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2)),
+
+            nn.Conv3d(256, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
+            nn.ReLU(),            
+            nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
+            nn.ReLU(),            
+            nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2)),
+
+            nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
+            nn.ReLU(),            
+            nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
+            nn.ReLU(),            
+            nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2), padding=(0, 1, 1)),
+        )
+        
+        self.classifier = nn.Sequential(
+            nn.Linear(8192, 4096),
+            nn.ReLU(),            
+            nn.Dropout(p=0.5),        
+            
+            nn.Linear(4096, 4096),
+            nn.ReLU(),            
+            nn.Dropout(p=0.5),        
+
+            nn.Linear(4096, 101),
+
+        )
+        
+        self.__init_weight()
+        
+    def __init_weight(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv3d):
+                torch.nn.init.kaiming_normal_(m.weight)
+            elif isinstance(m, nn.BatchNorm3d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+
+    def forward(self, x):
+
+        h = self.features(x)
+        h = h.view(h.size(0), -1)
+        probs = self.classifier(h)
+        return probs
 
 
 def patch_torchvision_mobilenet_v2(model):
@@ -131,6 +203,8 @@ def create_model(pretrained, dataset, arch, parallel=True, device_ids=None):
             model = _create_cifar10_model(arch, pretrained)
         elif dataset == 'mnist':
             model = _create_mnist_model(arch, pretrained)
+        elif dataset == 'ucf101':
+            model = _create_ucf101_model(arch, pretrained)
     except ValueError:
         if _is_registered_extension(arch, dataset, pretrained):
             model = _create_extension_model(arch, dataset)
@@ -157,6 +231,11 @@ def create_model(pretrained, dataset, arch, parallel=True, device_ids=None):
     model.dataset = dataset
     return model.to(device)
 
+def _create_ucf101_model(arch, pretrained):
+    dataset = "ucf101"
+    model = C3D()
+
+    return model
 
 def _create_imagenet_model(arch, pretrained):
     dataset = "imagenet"

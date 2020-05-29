@@ -65,12 +65,14 @@ class CompressionScheduler(object):
 
     def on_epoch_begin(self, epoch, optimizer=None, **kwargs):
         for policy in self.policies.get(epoch, list()):
+            # print("on_epoch_begin policy: ", policy)
             meta = self.sched_metadata[policy]
             meta['current_epoch'] = epoch
             policy.on_epoch_begin(self.model, self.zeros_mask_dict, meta,
                                   **kwargs)
 
     def on_minibatch_begin(self, epoch, minibatch_id, minibatches_per_epoch, optimizer=None):
+        print("on_minibatch_begin called :D")
         if epoch in self.policies:
             for policy in self.policies[epoch]:
                 meta = self.sched_metadata[policy]
@@ -273,6 +275,7 @@ def create_model_masks_dict(model):
     """A convenience function to create a dictionary of parameter maskers for a model"""
     zeros_mask_dict = {}
     for name, param in model.named_parameters():
+        # print('name: ', name)
         masker = ParameterMasker(name)
         zeros_mask_dict[name] = masker
     return zeros_mask_dict
