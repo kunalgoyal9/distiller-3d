@@ -65,7 +65,7 @@ class CompressionScheduler(object):
 
     def on_epoch_begin(self, epoch, optimizer=None, **kwargs):
         for policy in self.policies.get(epoch, list()):
-            # print("on_epoch_begin policy: ", policy)
+            print("on_epoch_begin policy: ", policy)
             meta = self.sched_metadata[policy]
             meta['current_epoch'] = epoch
             policy.on_epoch_begin(self.model, self.zeros_mask_dict, meta,

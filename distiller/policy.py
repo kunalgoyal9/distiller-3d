@@ -143,6 +143,7 @@ class PruningPolicy(ScheduledTrainingPolicy):
         self.is_initialized = False
 
     @staticmethod
+    # TODO: fold bn for conv3d
     def _fold_batchnorm(model, param_name, param, named_modules, sg):
         def _get_all_parameters(param_module, bn_module):
             w, b, gamma, beta = param_module.weight, param_module.bias, bn_module.weight, bn_module.bias
@@ -203,7 +204,7 @@ class PruningPolicy(ScheduledTrainingPolicy):
 
             if not is_initialized:
                 
-                print("not initialized")
+                # print("not initialized")
 
                 # Initialize the maskers
                 masker = zeros_mask_dict[param_name]
@@ -211,17 +212,17 @@ class PruningPolicy(ScheduledTrainingPolicy):
                 masker.mask_on_forward_only = self.mask_on_forward_only
                 # register for the backward hook of the parameters
                 if self.mask_gradients:
-                    print("mask_gradients")
+                    # print("mask_gradients")
                     masker.backward_hook_handle = param.register_hook(masker.mask_gradient)
 
                 self.is_initialized = True
 
                 if not self.skip_first_minibatch:
-                    print("flag2")
+                    # print("flag2")
                     self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
             else:
 
-                print("initialized")
+                # print("initialized")
                 
                 self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
 
