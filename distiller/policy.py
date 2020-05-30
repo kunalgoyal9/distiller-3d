@@ -204,7 +204,7 @@ class PruningPolicy(ScheduledTrainingPolicy):
 
             if not is_initialized:
                 
-                # print("not initialized")
+                print("not initialized")
 
                 # Initialize the maskers
                 masker = zeros_mask_dict[param_name]
@@ -222,7 +222,7 @@ class PruningPolicy(ScheduledTrainingPolicy):
                     self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
             else:
 
-                # print("initialized")
+                print("initialized")
                 
                 self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
 

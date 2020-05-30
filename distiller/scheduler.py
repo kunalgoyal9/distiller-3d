@@ -265,7 +265,7 @@ class ParameterMasker(object):
         if self.is_regularization_mask:
             self.mask = None
 
-        filter_view = parameter.view(parameter.size(0), -1)
+        # filter_view = parameter.view(parameter.size(0), -1)
         # num_filters = filter_view.size()[0]
         # nonzero_filters = torch.nonzero(filter_view.abs().sum(dim=1))
         # num_nnz_filters = nonzero_filters.nelement()
