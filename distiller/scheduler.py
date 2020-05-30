@@ -72,7 +72,7 @@ class CompressionScheduler(object):
                                   **kwargs)
 
     def on_minibatch_begin(self, epoch, minibatch_id, minibatches_per_epoch, optimizer=None):
-        print("on_minibatch_begin called :D")
+        # print("on_minibatch_begin called :D")
         if epoch in self.policies:
             for policy in self.policies[epoch]:
                 meta = self.sched_metadata[policy]

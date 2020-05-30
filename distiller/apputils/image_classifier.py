@@ -85,7 +85,7 @@ class ClassifierCompressor(object):
             self.model, *self.args.activation_stats)
         self.performance_tracker = apputils.SparsityAccuracyTracker(self.args.num_best_scores)
 
-        print("__init__ self.args.dataset: ",self.args.dataset)
+#         print("__init__ self.args.dataset: ",self.args.dataset)
 
     def load_datasets(self):
 

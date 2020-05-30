@@ -304,6 +304,12 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
     def handle_layer(layer_name, param_name, num_nnz_filters):
         # We are removing filters, so update the number of outgoing channels (OFMs)
         # in the convolutional layer
+        
+        # TODO: adding 3d convolution
+
+        print("layer_name: ", layer_name)
+        print("param_name: ", param_name)
+
         assert isinstance(layers[layer_name], torch.nn.modules.Conv2d)
         _append_module_directive(thinning_recipe, layer_name, key='out_channels', val=num_nnz_filters)
 
