@@ -218,7 +218,7 @@ class PruningPolicy(ScheduledTrainingPolicy):
                     self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
             else:
 
-                print("not initialized")
+                print("initialized")
                 
                 self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
 
