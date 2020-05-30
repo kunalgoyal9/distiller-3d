@@ -229,7 +229,7 @@ class PruningPolicy(ScheduledTrainingPolicy):
     def on_minibatch_begin(self, model, epoch, minibatch_id, minibatches_per_epoch,
                            zeros_mask_dict, meta, optimizer=None):
         
-        print("minibatch_begin called for pruning policy: ")
+        # print("minibatch_begin called for pruning policy: ")
 
         set_masks = False
         global_mini_batch_id = epoch * minibatches_per_epoch + minibatch_id
@@ -240,10 +240,10 @@ class PruningPolicy(ScheduledTrainingPolicy):
             # and a pruning step is scheduled
             set_masks = True
         
-        print("minibatch_id: ", minibatch_id, global_mini_batch_id)
-        print("set_masks: ", set_masks)
-        print("self.skip_first_minibatch: ", self.skip_first_minibatch)
-        
+        # print("minibatch_id: ", minibatch_id, global_mini_batch_id)
+        # print("set_masks: ", set_masks)
+        # print("self.skip_first_minibatch: ", self.skip_first_minibatch)
+
         if self.skip_first_minibatch and global_mini_batch_id == 1:
             # Because we skipped the first mini-batch of the first epoch (global_mini_batch_id == 0)
             set_masks = True

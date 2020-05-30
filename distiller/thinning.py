@@ -395,8 +395,8 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
         nonzero_filters = torch.nonzero(filter_view.abs().sum(dim=1))
         num_nnz_filters = nonzero_filters.nelement()
 
-        # print("num_filters: ", num_filters)
-        # print("num_nnz_filters: ", num_nnz_filters)
+        print("num_filters: ", num_filters)
+        print("num_nnz_filters: ", num_nnz_filters)
 
         if num_nnz_filters == 0:
             raise ValueError("Trying to set zero filters for parameter %s is not allowed" % param_name)
