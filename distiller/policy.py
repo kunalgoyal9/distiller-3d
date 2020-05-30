@@ -260,7 +260,7 @@ class PruningPolicy(ScheduledTrainingPolicy):
             print("pram_name: ", set_masks)
 
             if set_masks:
-                # print("fold_bn is true :-)")
+                print("set_masks")
                 if self.fold_bn:
                     param = self._fold_batchnorm(model, param_name, param, self.named_modules, self.sg)
                 self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
