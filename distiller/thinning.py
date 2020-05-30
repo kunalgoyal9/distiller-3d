@@ -387,8 +387,8 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
 
     for layer_name, param_name, param in sgraph.named_params_layers():
         # We are only interested in 4D weights
-        # if param.dim() != 4:
-            # continue
+        if param.dim() != 4:
+            continue
         # Find the number of zero-valued filters in this weights tensor
         filter_view = param.view(param.size(0), -1)
         num_filters = filter_view.size()[0]
