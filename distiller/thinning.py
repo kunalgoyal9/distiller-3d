@@ -388,7 +388,8 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
     for layer_name, param_name, param in sgraph.named_params_layers():
         print('layer_name: ', layer_name)
         print('param_name: ', param_name)
-
+        print("param.size(): ", param.size())
+        
         # We are only interested in 4D weights
         if param.dim() not in [4, 5]:
             continue
