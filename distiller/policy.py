@@ -197,7 +197,7 @@ class PruningPolicy(ScheduledTrainingPolicy):
 
         for param_name, param in model.named_parameters():
             
-            print("param_name: ", param_name)
+            # print("param_name: ", param_name)
 
             if self.fold_bn:
                 param = self._fold_batchnorm(model, param_name, param, self.named_modules, self.sg)
@@ -228,6 +228,9 @@ class PruningPolicy(ScheduledTrainingPolicy):
 
     def on_minibatch_begin(self, model, epoch, minibatch_id, minibatches_per_epoch,
                            zeros_mask_dict, meta, optimizer=None):
+        
+        print("minibatch_begin called for pruning policy: ")
+
         set_masks = False
         global_mini_batch_id = epoch * minibatches_per_epoch + minibatch_id
         if ((minibatch_id > 0) and
@@ -236,7 +239,11 @@ class PruningPolicy(ScheduledTrainingPolicy):
             # This is _not_ the first mini-batch of a new epoch (performed in on_epoch_begin)
             # and a pruning step is scheduled
             set_masks = True
-
+        
+        print("minibatch_id: ", minibatch_id, global_mini_batch_id)
+        print("set_masks: ", set_masks)
+        print("self.skip_first_minibatch: ", self.skip_first_minibatch)
+        
         if self.skip_first_minibatch and global_mini_batch_id == 1:
             # Because we skipped the first mini-batch of the first epoch (global_mini_batch_id == 0)
             set_masks = True
