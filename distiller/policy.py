@@ -144,9 +144,6 @@ class PruningPolicy(ScheduledTrainingPolicy):
 
     @staticmethod
     def _fold_batchnorm(model, param_name, param, named_modules, sg):
-        
-        print("fold_called in pruning policy")
-
         def _get_all_parameters(param_module, bn_module):
             w, b, gamma, beta = param_module.weight, param_module.bias, bn_module.weight, bn_module.bias
             if not bn_module.affine:
@@ -191,21 +188,23 @@ class PruningPolicy(ScheduledTrainingPolicy):
         meta['model'] = model
         is_initialized = self.is_initialized
 
-        print("before_fold_bn")
-
         if self.fold_bn:
-            
-            print("after_fold_bn")
-            
             # Cache this information (required for BN-folding) to improve performance
             self.named_modules = OrderedDict(model.named_modules())
             dummy_input = torch.randn(model.input_shape)
             self.sg = distiller.SummaryGraph(model, dummy_input)
 
         for param_name, param in model.named_parameters():
+            
+            print("param_name: ", param_name)
+
             if self.fold_bn:
                 param = self._fold_batchnorm(model, param_name, param, self.named_modules, self.sg)
+
             if not is_initialized:
+                
+                print("not initialized")
+
                 # Initialize the maskers
                 masker = zeros_mask_dict[param_name]
                 masker.use_double_copies = self.use_double_copies
@@ -218,6 +217,9 @@ class PruningPolicy(ScheduledTrainingPolicy):
                 if not self.skip_first_minibatch:
                     self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
             else:
+
+                print("not initialized")
+                
                 self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
 
     def on_minibatch_begin(self, model, epoch, minibatch_id, minibatches_per_epoch,
