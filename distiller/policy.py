@@ -211,10 +211,13 @@ class PruningPolicy(ScheduledTrainingPolicy):
                 masker.mask_on_forward_only = self.mask_on_forward_only
                 # register for the backward hook of the parameters
                 if self.mask_gradients:
+                    print("mask_gradients")
                     masker.backward_hook_handle = param.register_hook(masker.mask_gradient)
 
                 self.is_initialized = True
+
                 if not self.skip_first_minibatch:
+                    print("flag2")
                     self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
             else:
 
