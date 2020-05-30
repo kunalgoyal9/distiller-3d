@@ -221,6 +221,8 @@ if __name__ == '__main__':
             # However, using the msglogger as-is to do that means we get the trace twice in stdout - once from the
             # logging operation and once from re-raising the exception. So we remove the stdout logging handler
             # before logging the exception
+            print("msglogger not none")
+
             handlers_bak = msglogger.handlers
             msglogger.handlers = [h for h in msglogger.handlers if type(h) != logging.StreamHandler]
             msglogger.error(traceback.format_exc())
@@ -228,5 +230,6 @@ if __name__ == '__main__':
         raise
     finally:
         if msglogger is not None and hasattr(msglogger, 'log_filename'):
+            print("finally")
             msglogger.info('')
             msglogger.info('Log file for this run: ' + os.path.realpath(msglogger.log_filename))
