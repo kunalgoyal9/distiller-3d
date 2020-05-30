@@ -191,7 +191,12 @@ class PruningPolicy(ScheduledTrainingPolicy):
         meta['model'] = model
         is_initialized = self.is_initialized
 
+        print("before_fold_bn")
+
         if self.fold_bn:
+            
+            print("after_fold_bn")
+            
             # Cache this information (required for BN-folding) to improve performance
             self.named_modules = OrderedDict(model.named_modules())
             dummy_input = torch.randn(model.input_shape)
