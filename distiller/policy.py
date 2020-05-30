@@ -218,7 +218,7 @@ class PruningPolicy(ScheduledTrainingPolicy):
                 self.is_initialized = True
 
                 if not self.skip_first_minibatch:
-                    print("flag2")
+                    print("flag2: ", self.pruner)
                     self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
             else:
 
