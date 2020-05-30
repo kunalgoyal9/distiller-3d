@@ -87,7 +87,7 @@ def remove_filters(model, zeros_mask_dict, arch, dataset, optimizer):
     """Contract a model by removing weight filters"""
     sgraph = _create_graph(dataset, model)
     
-    print("sgraph: ", sgraph)
+    # print("sgraph: ", sgraph)
 
     thinning_recipe = create_thinning_recipe_filters(sgraph, model, zeros_mask_dict)
     apply_and_save_recipe(model, zeros_mask_dict, thinning_recipe, optimizer)
@@ -310,8 +310,8 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
         
         # TODO: adding 3d convolution
 
-        print("layer_name: ", layer_name)
-        print("param_name: ", param_name)
+        # print("layer_name: ", layer_name)
+        # print("param_name: ", param_name)
 
         assert isinstance(layers[layer_name], torch.nn.modules.Conv2d)
         _append_module_directive(thinning_recipe, layer_name, key='out_channels', val=num_nnz_filters)
@@ -395,8 +395,8 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
         nonzero_filters = torch.nonzero(filter_view.abs().sum(dim=1))
         num_nnz_filters = nonzero_filters.nelement()
 
-        print("num_filters: ", num_filters)
-        print("num_nnz_filters: ", num_nnz_filters)
+        # print("num_filters: ", num_filters)
+        # print("num_nnz_filters: ", num_nnz_filters)
 
         if num_nnz_filters == 0:
             raise ValueError("Trying to set zero filters for parameter %s is not allowed" % param_name)
