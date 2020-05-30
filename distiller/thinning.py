@@ -86,6 +86,9 @@ def remove_channels(model, zeros_mask_dict, arch, dataset, optimizer):
 def remove_filters(model, zeros_mask_dict, arch, dataset, optimizer):
     """Contract a model by removing weight filters"""
     sgraph = _create_graph(dataset, model)
+    
+    print("sgraph: ", sgraph)
+
     thinning_recipe = create_thinning_recipe_filters(sgraph, model, zeros_mask_dict)
     apply_and_save_recipe(model, zeros_mask_dict, thinning_recipe, optimizer)
     return model
