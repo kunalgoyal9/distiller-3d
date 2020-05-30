@@ -247,29 +247,31 @@ class ParameterMasker(object):
     def apply_mask(self, parameter):
         """Apply a mask on the weights tensor (parameter)."""
 
-        filter_view = parameter.view(parameter.size(0), -1)
-        num_filters = filter_view.size()[0]
-        nonzero_filters = torch.nonzero(filter_view.abs().sum(dim=1))
-        num_nnz_filters = nonzero_filters.nelement()
+        # filter_view = parameter.view(parameter.size(0), -1)
+        # num_filters = filter_view.size()[0]
+        # nonzero_filters = torch.nonzero(filter_view.abs().sum(dim=1))
+        # num_nnz_filters = nonzero_filters.nelement()
 
-        print("num_filters before : ", num_filters)
-        print("num_nnz_filters before: ", num_nnz_filters)
+        # print("num_filters before : ", num_filters)
+        # print("num_nnz_filters before: ", num_nnz_filters)
 
         if self.mask is None:
             return
         if self.use_double_copies:
             self.unmasked_copy = parameter.clone().detach()
+        
         self.mask_tensor(parameter)
+        
         if self.is_regularization_mask:
             self.mask = None
 
         filter_view = parameter.view(parameter.size(0), -1)
-        num_filters = filter_view.size()[0]
-        nonzero_filters = torch.nonzero(filter_view.abs().sum(dim=1))
-        num_nnz_filters = nonzero_filters.nelement()
+        # num_filters = filter_view.size()[0]
+        # nonzero_filters = torch.nonzero(filter_view.abs().sum(dim=1))
+        # num_nnz_filters = nonzero_filters.nelement()
         
-        print("num_filters after : ", num_filters)
-        print("num_nnz_filters after : ", num_nnz_filters)
+        # print("num_filters after : ", num_filters)
+        # print("num_nnz_filters after : ", num_nnz_filters)
         
         return parameter
 

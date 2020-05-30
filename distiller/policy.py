@@ -257,7 +257,7 @@ class PruningPolicy(ScheduledTrainingPolicy):
 
         for param_name, param in model.named_parameters():
 
-            print("pram_name: ", param_name)
+            # print("pram_name: ", param_name)
 
             if set_masks:
                 # print("set_masks")

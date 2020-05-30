@@ -37,6 +37,9 @@ class SparsityLevelParameterPruner(_ParameterPruner):
     def set_param_mask(self, param, param_name, zeros_mask_dict, meta):
         # If there is a specific sparsity level specified for this module, then
         # use it.  Otherwise try to use the default level ('*').
+        
+        print("param_name: ", param_name)
+
         desired_sparsity = self.levels.get(param_name, self.levels.get('*', 0))
         if desired_sparsity == 0:
             return
