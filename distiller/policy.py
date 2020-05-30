@@ -144,6 +144,9 @@ class PruningPolicy(ScheduledTrainingPolicy):
 
     @staticmethod
     def _fold_batchnorm(model, param_name, param, named_modules, sg):
+        
+        print("fold_called in pruning policy")
+
         def _get_all_parameters(param_module, bn_module):
             w, b, gamma, beta = param_module.weight, param_module.bias, bn_module.weight, bn_module.bias
             if not bn_module.affine:
