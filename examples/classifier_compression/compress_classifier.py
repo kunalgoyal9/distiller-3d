@@ -234,6 +234,7 @@ if __name__ == '__main__':
             msglogger.handlers = [h for h in msglogger.handlers if type(h) != logging.StreamHandler]
             msglogger.error(traceback.format_exc())
             msglogger.handlers = handlers_bak
+        raise
             # print("finally")
             # msglogger.info('')
             # msglogger.info('Log file for this run: ' + os.path.realpath(msglogger.log_filename))
