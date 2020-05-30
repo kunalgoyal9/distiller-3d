@@ -256,13 +256,23 @@ class PruningPolicy(ScheduledTrainingPolicy):
         # print("zeros_mask_dict: ", zeros_mask_dict)
 
         for param_name, param in model.named_parameters():
-            # print("pram_name: ", set_masks)
+
+            print("pram_name: ", set_masks)
+
             if set_masks:
                 # print("fold_bn is true :-)")
                 if self.fold_bn:
                     param = self._fold_batchnorm(model, param_name, param, self.named_modules, self.sg)
                 self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
             zeros_mask_dict[param_name].apply_mask(param)
+
+            filter_view = param.view(param.size(0), -1)
+            num_filters = filter_view.size()[0]
+            nonzero_filters = torch.nonzero(filter_view.abs().sum(dim=1))
+            num_nnz_filters = nonzero_filters.nelement()
+            
+            print("num_filters: ", num_filters)
+            print("num_nnz_filters: ", num_nnz_filters)
 
     def before_parameter_optimization(self, model, epoch, minibatch_id, minibatches_per_epoch,
                                       zeros_mask_dict, meta, optimizer):
