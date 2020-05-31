@@ -67,7 +67,7 @@ class _RankedStructureParameterPruner(_ParameterPruner):
         return self.desired_sparsity
 
     def set_param_mask(self, param, param_name, zeros_mask_dict, meta):
-        pritn("set_param_mask")
+        print("set_param_mask")
         if not self.is_supported(param_name):
             return
         fraction_to_prune = self.fraction_to_prune(param_name)
