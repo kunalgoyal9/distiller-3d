@@ -665,9 +665,9 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
         end = time.time()
         
-        if train_step == 5:
-            import sys
-            sys.exit()
+        # if train_step == 5:
+        #     import sys
+        #     sys.exit()
     #return acc_stats
 
    
