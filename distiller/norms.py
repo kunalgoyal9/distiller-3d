@@ -318,9 +318,15 @@ def rank_channels(param, group_len, magnitude_fn, fraction_to_partition, roundin
 
 
 def rank_filters(param, group_len, magnitude_fn, fraction_to_partition, rounding_fn, noise):
-    assert param.dim() == 4, "This ranking is only supported for 4D tensors"
+    # assert param.dim() == 4, "This ranking is only supported for 4D tensors"
     n_filters = param.size(0)
     n_filters_to_prune = num_structs_to_prune(n_filters, group_len, fraction_to_partition, rounding_fn)
+    
+    print("no of filters: ", n_filters)
+    print("group length: ", group_len)
+    print("no of fileters to prune: ", n_filters_to_prune)
+    
+
     if n_filters_to_prune == 0:
         return None, None
     mags = filters_norm(param, magnitude_fn, group_len, length_normalized=True)

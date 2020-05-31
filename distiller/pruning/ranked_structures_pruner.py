@@ -61,14 +61,14 @@ class _RankedStructureParameterPruner(_ParameterPruner):
         return self.params_names[0]
 
     def is_supported(self, param_name):
-        print("param_name in is_supported: ", param_name)
+        # print("param_name in is_supported: ", param_name)
         return param_name in self.params_names
 
     def fraction_to_prune(self, param_name):
         return self.desired_sparsity
 
     def set_param_mask(self, param, param_name, zeros_mask_dict, meta):
-        print("set_param_mask")
+        # print("set_param_mask")
         if not self.is_supported(param_name):
             return
         fraction_to_prune = self.fraction_to_prune(param_name)
@@ -80,7 +80,7 @@ class _RankedStructureParameterPruner(_ParameterPruner):
 
     def _set_param_mask_by_sparsity_target(self, param, param_name, zeros_mask_dict, target_sparsity, model):
         
-        print("_set_param_mask_by_sparsity")
+        # print("_set_param_mask_by_sparsity")
 
         if not self.is_supported(param_name):
             return
@@ -100,7 +100,7 @@ class _RankedStructureParameterPruner(_ParameterPruner):
         self.prune_group(target_sparsity, param, param_name, zeros_mask_dict, model, binary_map)
 
     def prune_group(self, fraction_to_prune, param, param_name, zeros_mask_dict, model=None, binary_map=None):
-        print("_Ranked prune_group called :P")
+        # print("_Ranked prune_group called :P")
 
         raise NotImplementedError
 
@@ -132,7 +132,7 @@ class LpRankedStructureParameterPruner(_RankedStructureParameterPruner):
                 raise ValueError("When defining a block pruner you must also specify the block shape")
 
     def prune_group(self, fraction_to_prune, param, param_name, zeros_mask_dict, model=None, binary_map=None):
-        print("Lp prune_group called")
+        # print("Lp prune_group called")
         if fraction_to_prune == 0:
             return
         if self.group_type in ('3D', 'Filters'):
@@ -174,7 +174,9 @@ class LpRankedStructureParameterPruner(_RankedStructureParameterPruner):
     def rank_and_prune_filters(fraction_to_prune, param, param_name, zeros_mask_dict,
                                model=None, binary_map=None, magnitude_fn=distiller.norms.l1_norm,
                                noise=0.0, group_size=1, rounding_fn=math.floor):
-        assert param.dim() == 4 or param.dim() == 3, "This pruning is only supported for 3D and 4D weights"
+        
+        # assert param.dim() == 4 or param.dim() == 3, "This pruning is only supported for 3D and 4D weights"
+        
         print("param.dim(): ", param.dim())
         if binary_map is None:
             bottomk_filters, filter_mags = distiller.norms.rank_filters(param, group_size, magnitude_fn,
