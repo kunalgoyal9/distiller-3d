@@ -605,8 +605,8 @@ def train(train_loader, model, criterion, optimizer, epoch,
         # print("compression_scheduler: ", args.device)
         inputs, target = inputs.to(args.device), target.to(args.device)
         
-        print("target: ", target)
-        
+        # print("target: ", target)
+
         # print("inputs: ", inputs)
 
         # Execute the forward phase, compute the output and measure loss
@@ -615,6 +615,8 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
         if not hasattr(args, 'kd_policy') or args.kd_policy is None:
             output = model(inputs)
+            print("output: ", output)
+            
         else:
             output = args.kd_policy.forward(inputs)
 
