@@ -277,6 +277,7 @@ class L1RankedStructureParameterPruner(LpRankedStructureParameterPruner):
     def __init__(self, name, group_type, desired_sparsity, weights,
                  group_dependency=None, kwargs=None, noise=0.0,
                  group_size=1, rounding_fn=math.floor):
+        print("param in L1 pruner: ", name, group_type, desired_sparsity, weights, group_dependency, kwargs)
         super().__init__(name, group_type, desired_sparsity, weights, group_dependency, 
                          kwargs, magnitude_fn=distiller.norms.l1_norm, noise=noise,
                          group_size=group_size, rounding_fn=rounding_fn)
