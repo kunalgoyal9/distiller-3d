@@ -305,8 +305,7 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
     should be changed in order to remove the filters.
     """
 
-    print("create_thinning_recipe called: ")
-    exit()
+    # exit()
 
     def handle_layer(layer_name, param_name, num_nnz_filters):
         # We are removing filters, so update the number of outgoing channels (OFMs)
@@ -314,8 +313,11 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
         
         # TODO: adding 3d convolution
 
-        # print("layer_name: ", layer_name)
-        # print("param_name: ", param_name)
+        print("layer_name: ", layer_name)
+        print("param_name: ", param_name)
+
+        print("handle called: ")
+        exit()
 
         assert isinstance(layers[layer_name], torch.nn.modules.Conv2d)
         _append_module_directive(thinning_recipe, layer_name, key='out_channels', val=num_nnz_filters)
@@ -403,8 +405,8 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
         nonzero_filters = torch.nonzero(filter_view.abs().sum(dim=1))
         num_nnz_filters = nonzero_filters.nelement()
 
-        # print("num_filters: ", num_filters)
-        # print("num_nnz_filters: ", num_nnz_filters)
+        print("num_filters: ", num_filters)
+        print("num_nnz_filters: ", num_nnz_filters)
 
         if num_nnz_filters == 0:
             raise ValueError("Trying to set zero filters for parameter %s is not allowed" % param_name)
