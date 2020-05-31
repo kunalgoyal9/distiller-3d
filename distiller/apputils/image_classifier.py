@@ -616,7 +616,7 @@ def train(train_loader, model, criterion, optimizer, epoch,
         if not hasattr(args, 'kd_policy') or args.kd_policy is None:
             output = model(inputs)
             print("output: ", output)
-            
+
         else:
             output = args.kd_policy.forward(inputs)
 
@@ -665,6 +665,9 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
         end = time.time()
     #return acc_stats
+
+    import sys
+    sys.exit()
     # NOTE: this breaks previous behavior, which returned a history of (top1, top5) values
     return classerr.value(1), classerr.value(5), losses[OVERALL_LOSS_KEY]
 
