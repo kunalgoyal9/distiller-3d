@@ -606,8 +606,8 @@ def execute_thinning_recipe(model, zeros_mask_dict, recipe, optimizer, loaded_fr
                     mask = zeros_mask_dict[param_name].mask
                     if mask is not None and (mask.size(dim) != len_indices):
                         zeros_mask_dict[param_name].mask = torch.index_select(mask, dim, indices)
-
-    exit()
+    import sys
+    sys.exit()
 
 # Todo: consider removing this function
 def resnet_cifar_remove_layers(model):
