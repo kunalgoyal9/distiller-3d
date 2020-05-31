@@ -313,8 +313,8 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
         
         # TODO: adding 3d convolution
 
-        # print("layer_name: ", layer_name)
-        # print("param_name: ", param_name)
+        print("layer_name: ", layer_name)
+        print("param_name: ", param_name)
 
         # exit()
 
@@ -333,7 +333,10 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
         # Find all instances of Convolution or FC (GEMM) layers that immediately follow this layer
         successors = sgraph.successors_f(layer_name, ['Conv', 'Gemm'])
         for successor in successors:
-            if isinstance(layers[successor], torch.nn.modules.Conv2d):
+            
+            print("successor: ", successor)
+
+            if isinstance(layers[successor], torch.nn.modules.Conv3d):
                 handle_conv_successor(thinning_recipe, layers, successor, num_nnz_filters, indices)
             elif isinstance(layers[successor], torch.nn.modules.Linear):
                 handle_linear_successor(successor, indices)
