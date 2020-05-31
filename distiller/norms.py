@@ -204,7 +204,7 @@ def filters_norm(param, norm_fn, group_len=1, length_normalized=False):
     Returns:
         1D tensor with lp-norms of the groups
     """
-    assert param.dim() == 4, "param has invalid dimensions"
+    # assert param.dim() == 4, "param has invalid dimensions"
     group_size = group_len * np.prod(param.shape[1:])
     return generic_norm(param.view(-1, group_size), norm_fn, group_size, length_normalized, dim=1)
 
@@ -322,9 +322,9 @@ def rank_filters(param, group_len, magnitude_fn, fraction_to_partition, rounding
     n_filters = param.size(0)
     n_filters_to_prune = num_structs_to_prune(n_filters, group_len, fraction_to_partition, rounding_fn)
     
-    print("no of filters: ", n_filters)
-    print("group length: ", group_len)
-    print("no of fileters to prune: ", n_filters_to_prune)
+    # print("no of filters: ", n_filters)
+    # print("group length: ", group_len)
+    # print("no of fileters to prune: ", n_filters_to_prune)
     
 
     if n_filters_to_prune == 0:
