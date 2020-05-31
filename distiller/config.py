@@ -219,6 +219,7 @@ def build_component(model, name, user_args, **extra_args):
 
     print("class_", class_)
     print("final_valid_args: ", final_valid_args)
+    print("extra_args: ", extra_args)
     instance = class_(**final_valid_args)
     return instance
 
