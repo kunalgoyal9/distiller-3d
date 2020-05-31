@@ -324,7 +324,7 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
 
         # Select only the non-zero filters
         indices = nonzero_filters.data.squeeze()
-        print("indices: ", indices)
+        # print("indices: ", indices)
         _append_param_directive(thinning_recipe, param_name, (0, indices))
 
         if layers[layer_name].bias is not None:
@@ -551,6 +551,8 @@ def execute_thinning_recipe(model, zeros_mask_dict, recipe, optimizer, loaded_fr
         for param_name, param_directives in recipe.parameters.items():
             
             print("param_name: ",param_name)
+            print("param_directives: ",param_directives)
+            
 
             if param_name == "module.fc.weight":
                 debug = True
