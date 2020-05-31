@@ -67,6 +67,7 @@ class _RankedStructureParameterPruner(_ParameterPruner):
         return self.desired_sparsity
 
     def set_param_mask(self, param, param_name, zeros_mask_dict, meta):
+        pritn("set_param_mask")
         if not self.is_supported(param_name):
             return
         fraction_to_prune = self.fraction_to_prune(param_name)
@@ -77,6 +78,9 @@ class _RankedStructureParameterPruner(_ParameterPruner):
         return self._set_param_mask_by_sparsity_target(param, param_name, zeros_mask_dict, fraction_to_prune, model)
 
     def _set_param_mask_by_sparsity_target(self, param, param_name, zeros_mask_dict, target_sparsity, model):
+        
+        print("_set_param_mask_by_sparsity")
+
         if not self.is_supported(param_name):
             return
 
@@ -95,7 +99,7 @@ class _RankedStructureParameterPruner(_ParameterPruner):
         self.prune_group(target_sparsity, param, param_name, zeros_mask_dict, model, binary_map)
 
     def prune_group(self, fraction_to_prune, param, param_name, zeros_mask_dict, model=None, binary_map=None):
-        print("_Ranked leader called :P")
+        print("_Ranked prune_group called :P")
 
         raise NotImplementedError
 
