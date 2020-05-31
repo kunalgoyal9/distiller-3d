@@ -82,7 +82,6 @@ class _RankedStructureParameterPruner(_ParameterPruner):
 
         binary_map = None
         if self.group_dependency == "Leader":
-            print("not the leader in l1ranked :P")
             if target_sparsity != self.last_target_sparsity:
                 # Each time we change the target sparsity we need to compute and cache the leader's binary-map.
                 # We don't have control over the order that this function is invoked, so the only indication that
@@ -96,6 +95,8 @@ class _RankedStructureParameterPruner(_ParameterPruner):
         self.prune_group(target_sparsity, param, param_name, zeros_mask_dict, model, binary_map)
 
     def prune_group(self, fraction_to_prune, param, param_name, zeros_mask_dict, model=None, binary_map=None):
+        print("_Ranked leader called :P")
+
         raise NotImplementedError
 
 
@@ -126,6 +127,7 @@ class LpRankedStructureParameterPruner(_RankedStructureParameterPruner):
                 raise ValueError("When defining a block pruner you must also specify the block shape")
 
     def prune_group(self, fraction_to_prune, param, param_name, zeros_mask_dict, model=None, binary_map=None):
+        print("Lp prune_group called")
         if fraction_to_prune == 0:
             return
         if self.group_type in ('3D', 'Filters'):
