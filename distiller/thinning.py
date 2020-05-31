@@ -550,7 +550,7 @@ def execute_thinning_recipe(model, zeros_mask_dict, recipe, optimizer, loaded_fr
     with torch.no_grad():
         for param_name, param_directives in recipe.parameters.items():
             
-            print("param_name: "param_name)
+            print("param_name: ",param_name)
 
             if param_name == "module.fc.weight":
                 debug = True
