@@ -603,14 +603,19 @@ def train(train_loader, model, criterion, optimizer, epoch,
         # Measure data loading time
         data_time.add(time.time() - end)
         # print("compression_scheduler: ", args.device)
-        inputs, target = inputs.to(args.device), target.to(args.device)
+        inputs, target = inputs.to(args.device)/100, target.to(args.device)
         
+        # print("target: ", target)
+
+        # print("inputs: ", inputs)
+
         # Execute the forward phase, compute the output and measure loss
         if compression_scheduler:
             compression_scheduler.on_minibatch_begin(epoch, train_step, steps_per_epoch, optimizer)
 
         if not hasattr(args, 'kd_policy') or args.kd_policy is None:
             output = model(inputs)
+            # print("output: ", output)
 
         else:
             output = args.kd_policy.forward(inputs)
