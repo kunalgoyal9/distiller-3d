@@ -603,7 +603,9 @@ def train(train_loader, model, criterion, optimizer, epoch,
         # Measure data loading time
         data_time.add(time.time() - end)
         # print("compression_scheduler: ", args.device)
-        inputs, target = inputs.to(args.device)/10000, target.to(args.device)
+        inputs, target = inputs.to(args.device), target.to(args.device)
+        
+        print("target: ", target)
         
         # print("inputs: ", inputs)
 
