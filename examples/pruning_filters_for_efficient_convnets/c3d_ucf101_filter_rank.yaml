@@ -118,10 +118,10 @@ pruners:
     group_type: Filters
     desired_sparsity: 0.6
     weights: [
-      # module.features.0.weight,
-      # module.features.3.weight,
-      # module.features.6.weight,
-      # module.features.8.weight,
+      module.features.0.weight,
+      module.features.3.weight,
+      module.features.6.weight,
+      module.features.8.weight,
       ]
 
   # filter_pruner_50:
