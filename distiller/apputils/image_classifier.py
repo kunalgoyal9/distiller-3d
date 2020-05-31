@@ -604,6 +604,8 @@ def train(train_loader, model, criterion, optimizer, epoch,
         data_time.add(time.time() - end)
         # print("compression_scheduler: ", args.device)
         inputs, target = inputs.to(args.device)/100, target.to(args.device)
+        
+        print("inputs: ", inputs)
 
         # Execute the forward phase, compute the output and measure loss
         if compression_scheduler:
