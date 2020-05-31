@@ -319,10 +319,7 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
         print("layer_name: ", layer_name)
         print("param_name: ", param_name)
 
-        # exit()
-
         assert isinstance(layers[layer_name], torch.nn.modules.Conv2d) or isinstance(layers[layer_name], torch.nn.modules.Conv3d)
-        print("handle called: ")
         _append_module_directive(thinning_recipe, layer_name, key='out_channels', val=num_nnz_filters)
 
         # Select only the non-zero filters
@@ -341,6 +338,8 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
 
             if isinstance(layers[successor], torch.nn.modules.Conv3d):
                 handle_conv_successor(thinning_recipe, layers, successor, num_nnz_filters, indices)
+            elif isinstance(layers[successor], torch.nn.modules.Conv2d):
+                handle_conv_successor(thinning_recipe, layers, successor, num_nnz_filters, indices)
             elif isinstance(layers[successor], torch.nn.modules.Linear):
                 handle_linear_successor(successor, indices)
 
@@ -350,7 +349,9 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
     def handle_conv_successor(thinning_recipe, layers, successor, num_nnz_filters, indices):
         # For each of the convolutional layers that follow, we have to reduce the number of input channels.
         _append_module_directive(thinning_recipe, successor, key='in_channels', val=num_nnz_filters)
-
+        
+        print("handle_conv_successor: groupts ", layers[successor].groups)
+        
         if layers[successor].groups == 1:
             print("handled conv successor")
             # Now remove channels from the weights tensor of the successor conv
