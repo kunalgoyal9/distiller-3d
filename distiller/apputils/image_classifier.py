@@ -603,7 +603,7 @@ def train(train_loader, model, criterion, optimizer, epoch,
         # Measure data loading time
         data_time.add(time.time() - end)
         # print("compression_scheduler: ", args.device)
-        inputs, target = inputs.to(args.device), target.to(args.device)
+        inputs, target = inputs.to(args.device)/100, target.to(args.device)
         
         # print("target: ", target)
 
@@ -664,10 +664,13 @@ def train(train_loader, model, criterion, optimizer, epoch,
             _log_training_progress()
 
         end = time.time()
+        
+        if train_step == 5:
+            import sys
+            sys.exit()
     #return acc_stats
 
-    import sys
-    sys.exit()
+   
     # NOTE: this breaks previous behavior, which returned a history of (top1, top5) values
     return classerr.value(1), classerr.value(5), losses[OVERALL_LOSS_KEY]
 
