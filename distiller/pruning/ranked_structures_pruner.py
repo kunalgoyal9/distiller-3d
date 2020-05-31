@@ -82,6 +82,7 @@ class _RankedStructureParameterPruner(_ParameterPruner):
 
         binary_map = None
         if self.group_dependency == "Leader":
+            print("not the leader in l1ranked :P")
             if target_sparsity != self.last_target_sparsity:
                 # Each time we change the target sparsity we need to compute and cache the leader's binary-map.
                 # We don't have control over the order that this function is invoked, so the only indication that
@@ -277,7 +278,7 @@ class L1RankedStructureParameterPruner(LpRankedStructureParameterPruner):
     def __init__(self, name, group_type, desired_sparsity, weights,
                  group_dependency=None, kwargs=None, noise=0.0,
                  group_size=1, rounding_fn=math.floor):
-        print("param in L1 pruner: ", name, group_type, desired_sparsity, weights, group_dependency, kwargs)
+        # print("param in L1 pruner: ", name, group_type, desired_sparsity, weights, group_dependency, kwargs)
         super().__init__(name, group_type, desired_sparsity, weights, group_dependency, 
                          kwargs, magnitude_fn=distiller.norms.l1_norm, noise=noise,
                          group_size=group_size, rounding_fn=rounding_fn)
