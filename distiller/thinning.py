@@ -349,6 +349,7 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
         _append_module_directive(thinning_recipe, successor, key='in_channels', val=num_nnz_filters)
 
         if layers[successor].groups == 1:
+            print("handled conv successor")
             # Now remove channels from the weights tensor of the successor conv
             _append_param_directive(thinning_recipe, successor + '.weight', (1, indices))
         elif layers[successor].groups == layers[successor].in_channels:
