@@ -188,6 +188,11 @@ class LpRankedStructureParameterPruner(_RankedStructureParameterPruner):
             threshold = bottomk_filters[-1]
             binary_map = filter_mags.gt(threshold).type(param.data.type())
 
+        print("reached to binary_map in rank and prune filters")
+        print("binary_map: ", binary_map)
+
+        exit()
+
         if zeros_mask_dict is not None:
             mask, _ = distiller.thresholding.expand_binary_map(param, 'Filters', binary_map)
             zeros_mask_dict[param_name].mask = mask
