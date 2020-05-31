@@ -324,6 +324,7 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
 
         # Select only the non-zero filters
         indices = nonzero_filters.data.squeeze()
+        print("indices: ", indices)
         _append_param_directive(thinning_recipe, param_name, (0, indices))
 
         if layers[layer_name].bias is not None:
@@ -336,10 +337,11 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
             
             print("successor: ", successor)
 
+            # TODO: adding conv2d and conv3d simuntaneously
             if isinstance(layers[successor], torch.nn.modules.Conv3d):
                 handle_conv_successor(thinning_recipe, layers, successor, num_nnz_filters, indices)
-            elif isinstance(layers[successor], torch.nn.modules.Conv2d):
-                handle_conv_successor(thinning_recipe, layers, successor, num_nnz_filters, indices)
+            # elif isinstance(layers[successor], torch.nn.modules.Conv2d):
+                # handle_conv_successor(thinning_recipe, layers, successor, num_nnz_filters, indices)
             elif isinstance(layers[successor], torch.nn.modules.Linear):
                 handle_linear_successor(successor, indices)
 
@@ -350,10 +352,10 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
         # For each of the convolutional layers that follow, we have to reduce the number of input channels.
         _append_module_directive(thinning_recipe, successor, key='in_channels', val=num_nnz_filters)
         
-        print("handle_conv_successor: groupts ", layers[successor].groups)
+        # print("handle_conv_successor: groupts ", layers[successor].groups)
         
         if layers[successor].groups == 1:
-            print("handled conv successor")
+            # print("handled conv successor")
             # Now remove channels from the weights tensor of the successor conv
             _append_param_directive(thinning_recipe, successor + '.weight', (1, indices))
         elif layers[successor].groups == layers[successor].in_channels:
@@ -524,6 +526,10 @@ def execute_thinning_recipe(model, zeros_mask_dict, recipe, optimizer, loaded_fr
     device = distiller.utils.model_device(model)
     layers = {mod_name: m for mod_name, m in model.named_modules()}
     for layer_name, directives in recipe.modules.items():
+        
+        print("layer_name: ", layer_name)
+        print("directives: ", directives)
+
         for attr, val in directives.items():
             if attr in ['running_mean', 'running_var']:
                 running = getattr(layers[layer_name], attr)
@@ -543,6 +549,9 @@ def execute_thinning_recipe(model, zeros_mask_dict, recipe, optimizer, loaded_fr
 
     with torch.no_grad():
         for param_name, param_directives in recipe.parameters.items():
+            
+            print("param_name: "param_name)
+
             if param_name == "module.fc.weight":
                 debug = True
             msglogger.debug("{} : {}".format(param_name, param_directives))
