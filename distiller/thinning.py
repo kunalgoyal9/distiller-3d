@@ -527,8 +527,8 @@ def execute_thinning_recipe(model, zeros_mask_dict, recipe, optimizer, loaded_fr
     layers = {mod_name: m for mod_name, m in model.named_modules()}
     for layer_name, directives in recipe.modules.items():
         
-        print("layer_name: ", layer_name)
-        print("directives: ", directives)
+        # print("layer_name: ", layer_name)
+        # print("directives: ", directives)
 
         for attr, val in directives.items():
             if attr in ['running_mean', 'running_var']:
@@ -550,8 +550,8 @@ def execute_thinning_recipe(model, zeros_mask_dict, recipe, optimizer, loaded_fr
     with torch.no_grad():
         for param_name, param_directives in recipe.parameters.items():
             
-            print("param_name: ",param_name)
-            print("param_directives: ",param_directives)
+            # print("param_name: ",param_name)
+            # print("param_directives: ",param_directives)
 
             # if param_name == "module.fc.weight":
             debug = True
