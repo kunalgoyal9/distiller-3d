@@ -554,8 +554,9 @@ def execute_thinning_recipe(model, zeros_mask_dict, recipe, optimizer, loaded_fr
             print("param_directives: ",param_directives)
             
 
-            if param_name == "module.fc.weight":
-                debug = True
+            # if param_name == "module.fc.weight":
+            debug = True
+            
             msglogger.debug("{} : {}".format(param_name, param_directives))
             param = distiller.model_find_param(model, param_name)
             assert param is not None
