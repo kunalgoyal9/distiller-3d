@@ -162,6 +162,7 @@ def expand_binary_map(param, group_type, binary_map):
     assert binary_map is not None
 
     print("expand_binary_map in thresholding is called: ")
+    print("param.size(): ", param.size())
 
     # Now let's expand back up to a 4D mask
     if group_type == 'Channels' and param.dim() == 2:
@@ -177,7 +178,14 @@ def expand_binary_map(param, group_type, binary_map):
         return binary_map.expand(*param.shape), binary_map
     elif group_type == '3D' or group_type == 'Filters':
         a = binary_map.expand(np.prod(param.shape[1:]), param.size(0)).t()
-        return a.view(*param.shape), binary_map
+        
+        print("projected binary_map size: ", a.size())
+        
+        viewed_a = a.view(*param.shape)
+        
+        print("reshaped mask: ", viewed_a.size())
+
+        return viewed_a, binary_map
     elif group_type == 'Channels':
         num_filters, num_channels = param.size(0), param.size(1)
         a = binary_map.expand(num_filters, num_channels)
