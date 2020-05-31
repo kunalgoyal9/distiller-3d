@@ -195,13 +195,13 @@ class LpRankedStructureParameterPruner(_RankedStructureParameterPruner):
 
         if zeros_mask_dict is not None:
             print("inside zeros_mask_dict ")
-            exit()
             mask, _ = distiller.thresholding.expand_binary_map(param, 'Filters', binary_map)
             zeros_mask_dict[param_name].mask = mask
             msglogger.info("%sRankedStructureParameterPruner - param: %s pruned=%.3f goal=%.3f",
                            magnitude_fn, param_name,
                            distiller.sparsity(mask),
                            fraction_to_prune)
+            exit()
         return binary_map
 
     @staticmethod
