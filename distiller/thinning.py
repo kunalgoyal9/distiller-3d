@@ -176,6 +176,9 @@ def _append_bn_thinning_directive(thinning_recipe, layers, bn_name, len_thin_fea
 def apply_and_save_recipe(model, zeros_mask_dict, thinning_recipe, optimizer):
     if len(thinning_recipe.modules) > 0 or len(thinning_recipe.parameters) > 0:
         # Now actually remove the filters, channels and make the weight tensors smaller
+        
+        print("applying thinning recipe:")
+
         execute_thinning_recipe(model, zeros_mask_dict, thinning_recipe, optimizer)
 
         # Stash the recipe, so that it will be serialized together with the model
