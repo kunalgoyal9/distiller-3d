@@ -313,13 +313,13 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
         
         # TODO: adding 3d convolution
 
-        print("layer_name: ", layer_name)
-        print("param_name: ", param_name)
+        # print("layer_name: ", layer_name)
+        # print("param_name: ", param_name)
 
+        # exit()
+
+        assert isinstance(layers[layer_name], torch.nn.modules.Conv2d) or isinstance(layers[layer_name], torch.nn.modules.Conv3d)
         print("handle called: ")
-        exit()
-
-        assert isinstance(layers[layer_name], torch.nn.modules.Conv2d)
         _append_module_directive(thinning_recipe, layer_name, key='out_channels', val=num_nnz_filters)
 
         # Select only the non-zero filters
