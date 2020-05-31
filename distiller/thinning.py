@@ -552,7 +552,6 @@ def execute_thinning_recipe(model, zeros_mask_dict, recipe, optimizer, loaded_fr
             
             print("param_name: ",param_name)
             print("param_directives: ",param_directives)
-            
 
             # if param_name == "module.fc.weight":
             debug = True
@@ -560,6 +559,7 @@ def execute_thinning_recipe(model, zeros_mask_dict, recipe, optimizer, loaded_fr
             msglogger.debug("{} : {}".format(param_name, param_directives))
             param = distiller.model_find_param(model, param_name)
             assert param is not None
+            
             for directive in param_directives:
                 dim = directive[0]
                 indices = directive[1].to(device)
@@ -600,12 +600,14 @@ def execute_thinning_recipe(model, zeros_mask_dict, recipe, optimizer, loaded_fr
                             msglogger.debug("Updated velocity buffer %s" % param_name)
 
                 if not loaded_from_file and zeros_mask_dict:
+                    print("flag "*100)
                     # If the masks are loaded from a checkpoint file, then we don't need to change
                     # their shape, because they are already correctly shaped
                     mask = zeros_mask_dict[param_name].mask
                     if mask is not None and (mask.size(dim) != len_indices):
                         zeros_mask_dict[param_name].mask = torch.index_select(mask, dim, indices)
 
+    exit()
 
 # Todo: consider removing this function
 def resnet_cifar_remove_layers(model):
