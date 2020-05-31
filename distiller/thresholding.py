@@ -161,6 +161,8 @@ def expand_binary_map(param, group_type, binary_map):
     assert group_type in ('2D', 'Rows', 'Cols', '3D', 'Filters', '4D', 'Channels')
     assert binary_map is not None
 
+    print("expand_binary_map in thresholding is called: ")
+
     # Now let's expand back up to a 4D mask
     if group_type == 'Channels' and param.dim() == 2:
         group_type = 'Cols'

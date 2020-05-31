@@ -188,12 +188,14 @@ class LpRankedStructureParameterPruner(_RankedStructureParameterPruner):
             threshold = bottomk_filters[-1]
             binary_map = filter_mags.gt(threshold).type(param.data.type())
 
-        print("reached to binary_map in rank and prune filters")
-        print("binary_map: ", binary_map)
+        # print("reached to binary_map in rank and prune filters")
+        # print("binary_map: ", binary_map)
 
-        exit()
+        # exit()
 
         if zeros_mask_dict is not None:
+            print("inside zeros_mask_dict ")
+            exit()
             mask, _ = distiller.thresholding.expand_binary_map(param, 'Filters', binary_map)
             zeros_mask_dict[param_name].mask = mask
             msglogger.info("%sRankedStructureParameterPruner - param: %s pruned=%.3f goal=%.3f",
