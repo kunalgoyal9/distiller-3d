@@ -177,7 +177,7 @@ class LpRankedStructureParameterPruner(_RankedStructureParameterPruner):
         
         # assert param.dim() == 4 or param.dim() == 3, "This pruning is only supported for 3D and 4D weights"
         
-        print("param.dim(): ", param.dim())
+        # print("param.dim(): ", param.dim())
         if binary_map is None:
             bottomk_filters, filter_mags = distiller.norms.rank_filters(param, group_size, magnitude_fn,
                                                                         fraction_to_prune, rounding_fn, noise)
@@ -194,14 +194,14 @@ class LpRankedStructureParameterPruner(_RankedStructureParameterPruner):
         # exit()
 
         if zeros_mask_dict is not None:
-            print("inside zeros_mask_dict ")
+            # print("inside zeros_mask_dict ")
             mask, _ = distiller.thresholding.expand_binary_map(param, 'Filters', binary_map)
             zeros_mask_dict[param_name].mask = mask
             msglogger.info("%sRankedStructureParameterPruner - param: %s pruned=%.3f goal=%.3f",
                            magnitude_fn, param_name,
                            distiller.sparsity(mask),
                            fraction_to_prune)
-            exit()
+            # exit()
         return binary_map
 
     @staticmethod
@@ -294,7 +294,7 @@ class L1RankedStructureParameterPruner(LpRankedStructureParameterPruner):
     def __init__(self, name, group_type, desired_sparsity, weights,
                  group_dependency=None, kwargs=None, noise=0.0,
                  group_size=1, rounding_fn=math.floor):
-        print("param in L1 pruner: ", name, group_type, desired_sparsity, weights, group_dependency, kwargs)
+        # print("param in L1 pruner: ", name, group_type, desired_sparsity, weights, group_dependency, kwargs)
         super().__init__(name, group_type, desired_sparsity, weights, group_dependency, 
                          kwargs, magnitude_fn=distiller.norms.l1_norm, noise=noise,
                          group_size=group_size, rounding_fn=rounding_fn)

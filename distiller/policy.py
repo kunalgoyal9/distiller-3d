@@ -204,7 +204,7 @@ class PruningPolicy(ScheduledTrainingPolicy):
 
             if not is_initialized:
                 
-                print("not initialized")
+                # print("not initialized")
 
                 # Initialize the maskers
                 masker = zeros_mask_dict[param_name]
@@ -222,7 +222,7 @@ class PruningPolicy(ScheduledTrainingPolicy):
                     self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
             else:
 
-                print("initialized")
+                # print("initialized")
                 
                 self.pruner.set_param_mask(param, param_name, zeros_mask_dict, meta)
 
@@ -240,20 +240,9 @@ class PruningPolicy(ScheduledTrainingPolicy):
             # and a pruning step is scheduled
             set_masks = True
         
-        # print("minibatch_id: ", minibatch_id, global_mini_batch_id)
-        # print("set_masks: ", set_masks)
-        # print("self.skip_first_minibatch: ", self.skip_first_minibatch)
-
         if self.skip_first_minibatch and global_mini_batch_id == 1:
             # Because we skipped the first mini-batch of the first epoch (global_mini_batch_id == 0)
             set_masks = True
-
-        # if set_masks == True:
-            # print("minibatch_id: ", minibatch_id)
-            # print("self.mini_batch_pruning_frequency: ", self.mini_batch_pruning_frequency)
-            # print("global_mini_batch_id: ", global_mini_batch_id)
-        
-        # print("zeros_mask_dict: ", zeros_mask_dict)
 
         for param_name, param in model.named_parameters():
 
@@ -267,8 +256,6 @@ class PruningPolicy(ScheduledTrainingPolicy):
             zeros_mask_dict[param_name].apply_mask(param)
 
         
-        exit()
-            
 
     def before_parameter_optimization(self, model, epoch, minibatch_id, minibatches_per_epoch,
                                       zeros_mask_dict, meta, optimizer):

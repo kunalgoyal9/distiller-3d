@@ -304,6 +304,10 @@ def create_thinning_recipe_filters(sgraph, model, zeros_mask_dict):
     The thinning recipe contains meta-instructions of how the model
     should be changed in order to remove the filters.
     """
+
+    print("create_thinning_recipe called: ")
+    exit()
+
     def handle_layer(layer_name, param_name, num_nnz_filters):
         # We are removing filters, so update the number of outgoing channels (OFMs)
         # in the convolutional layer
