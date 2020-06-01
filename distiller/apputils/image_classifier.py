@@ -758,7 +758,7 @@ def _validate(data_loader, model, criterion, loggers, args, epoch=-1):
     end = time.time()
     with torch.no_grad():
         for validation_step, (inputs, target) in enumerate(data_loader):
-            inputs, target = inputs.to(args.device), target.to(args.device)
+            inputs, target = inputs.to(args.device)/255, target.to(args.device)
             # compute output from model
             output = model(inputs)
 
