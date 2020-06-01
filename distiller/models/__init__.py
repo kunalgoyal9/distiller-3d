@@ -71,69 +71,72 @@ ALL_MODEL_NAMES.append("c3d_ucf101")
 
 class C3D(nn.Module):
     """
-    The C3D network as described in [1].
+    The C3D network.
     """
 
-    def __init__(self):
+    def __init__(self, num_classes, pretrained=False):
         super(C3D, self).__init__()
 
-        self.features = nn.Sequential(
-            nn.Conv3d(3, 64, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
-            nn.ReLU(),            
-            nn.MaxPool3d(kernel_size=(1, 2, 2), stride=(1, 2, 2)),
-            
-            nn.Conv3d(64, 128, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
-            nn.ReLU(),            
-            nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2)),
-            
-            nn.Conv3d(128, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
-            nn.ReLU(),            
-            nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
-            nn.ReLU(),            
-            nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2)),
+        self.conv1 = nn.Conv3d(3, 64, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        self.pool1 = nn.MaxPool3d(kernel_size=(1, 2, 2), stride=(1, 2, 2))
 
-            nn.Conv3d(256, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
-            nn.ReLU(),            
-            nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
-            nn.ReLU(),            
-            nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2)),
+        self.conv2 = nn.Conv3d(64, 128, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        self.pool2 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2))
 
-            nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
-            nn.ReLU(),            
-            nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1)),
-            nn.ReLU(),            
-            nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2), padding=(0, 1, 1)),
-        )
-        
-        self.classifier = nn.Sequential(
-            nn.Linear(8192, 4096),
-            nn.ReLU(),            
-            nn.Dropout(p=0.5),        
-            
-            nn.Linear(4096, 4096),
-            nn.ReLU(),            
-            nn.Dropout(p=0.5),        
+        self.conv3 = nn.Conv3d(128, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        # self.conv3b = nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        self.pool3 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2))
 
-            nn.Linear(4096, 101),
+        self.conv4 = nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        # self.conv4b = nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        self.pool4 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2))
 
-        )
-        
+        self.conv5 = nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        # self.conv5b = nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        self.pool5 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2), padding=(0, 1, 1))
+
+        self.fc6 = nn.Linear(4096, 2048)
+        self.fc7 = nn.Linear(2048, 2048)
+        self.fc8 = nn.Linear(2048, num_classes)
+
+        self.dropout = nn.Dropout(p=0.5)
+
+        self.relu = nn.ReLU()
+
         self.__init_weight()
-        
-    def __init_weight(self):
-        for m in self.modules():
-            if isinstance(m, nn.Conv3d):
-                torch.nn.init.kaiming_normal_(m.weight)
-            elif isinstance(m, nn.BatchNorm3d):
-                m.weight.data.fill_(1)
-                m.bias.data.zero_()
+
+        if pretrained:
+            self.__load_pretrained_weights()
 
     def forward(self, x):
 
-        h = self.features(x)
-        h = h.view(h.size(0), -1)
-        probs = self.classifier(h)
-        return probs
+        x = self.relu(self.conv1(x))
+        x = self.pool1(x)
+
+        x = self.relu(self.conv2(x))
+        x = self.pool2(x)
+
+        x = self.relu(self.conv3(x))
+        # x = self.relu(self.conv3b(x))
+        x = self.pool3(x)
+
+        x = self.relu(self.conv4(x))
+        # x = self.relu(self.conv4b(x))
+        x = self.pool4(x)
+
+        x = self.relu(self.conv5(x))
+        # x = self.relu(self.conv5b(x))
+        x = self.pool5(x)
+
+        x = x.view(-1, 4096)
+        x = self.relu(self.fc6(x))
+        x = self.dropout(x)
+        x = self.relu(self.fc7(x))
+        x = self.dropout(x)
+
+        logits = self.fc8(x)
+
+        return logits
 
 
 def patch_torchvision_mobilenet_v2(model):
@@ -233,7 +236,7 @@ def create_model(pretrained, dataset, arch, parallel=True, device_ids=None):
 
 def _create_ucf101_model(arch, pretrained):
     dataset = "ucf101"
-    model = C3D()
+    model = C3D(101)
 
     return model
 
