@@ -599,15 +599,19 @@ def train(train_loader, model, criterion, optimizer, epoch,
     model.train()
     acc_stats = []
     end = time.time()
+    
+    first_chk = True
+
     for train_step, (inputs, target) in enumerate(train_loader):
         # Measure data loading time
         data_time.add(time.time() - end)
         # print("compression_scheduler: ", args.device)
-        inputs, target = inputs.to(args.device)/100, target.to(args.device)
+        inputs, target = inputs.to(args.device), target.to(args.device)
         
         # print("target: ", target)
-
-        # print("inputs: ", inputs)
+        if first_chk:
+            print("inputs.size(): ", inputs.size())
+            first_chk = False
 
         # Execute the forward phase, compute the output and measure loss
         if compression_scheduler:
