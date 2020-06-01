@@ -103,7 +103,7 @@ class C3D(nn.Module):
 
         self.relu = nn.ReLU()
 
-        self.__init_weight()
+        # self.__init_weight()
 
         if pretrained:
             self.__load_pretrained_weights()
