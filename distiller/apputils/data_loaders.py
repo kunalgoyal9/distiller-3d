@@ -122,7 +122,7 @@ class VideoDataset(Dataset):
 
     def check_integrity(self):
         
-        # print("path: ", self.root_dir)
+        print("path: ", self.root_dir)
 
         if not os.path.exists(self.root_dir):
             return False
