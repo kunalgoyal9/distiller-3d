@@ -41,19 +41,19 @@ import pprint
 import torch
 from fvcore.nn.precise_bn import get_bn_modules, update_bn_stats
 
-import slowfast.models.losses as losses
-import slowfast.models.optimizer as optim
-import slowfast.utils.checkpoint as cu
-import slowfast.utils.distributed as du
-import slowfast.utils.logging as logging
-import slowfast.utils.metrics as metrics
-import slowfast.utils.misc as misc
-from slowfast.datasets import loader
+# import slowfast.models.losses as losses
+# import slowfast.models.optimizer as optim
+# import slowfast.utils.checkpoint as cu
+# import slowfast.utils.distributed as du
+# import slowfast.utils.logging as logging
+# import slowfast.utils.metrics as metrics
+# import slowfast.utils.misc as misc
+# from slowfast.datasets import loader
 from slowfast.models import build_model
-from slowfast.utils.meters import AVAMeter, TrainMeter, ValMeter
+# from slowfast.utils.meters import AVAMeter, TrainMeter, ValMeter
 
-import slowfast.utils.multiprocessing as mpu
-from tools.train_net import train
+# import slowfast.utils.multiprocessing as mpu
+# from tools.train_net import train
 
 cfg = get_cfg()
 cfg.merge_from_file("configs/SLOWFAST_8x8_R50-UCF101.yaml")
