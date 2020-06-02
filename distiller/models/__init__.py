@@ -56,7 +56,7 @@ from slowfast.models import build_model
 # from tools.train_net import train
 
 cfg = get_cfg()
-cfg.merge_from_file("configs/SLOWFAST_8x8_R50-UCF101.yaml")
+cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8_R50-UCF101.yaml")
 # cfg.NUM_GPUS = 1
 # cfg.TRAIN.BATCH_SIZE = 2
 cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
