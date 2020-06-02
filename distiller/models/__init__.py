@@ -32,6 +32,35 @@ from distiller.utils import set_model_input_shape_attr, model_setattr
 from distiller.modules import Mean, EltwiseAdd
 
 import logging
+
+from slowfast.utils.parser import load_config, parse_args
+from slowfast.config.defaults import get_cfg
+
+import numpy as np
+import pprint
+import torch
+from fvcore.nn.precise_bn import get_bn_modules, update_bn_stats
+
+import slowfast.models.losses as losses
+import slowfast.models.optimizer as optim
+import slowfast.utils.checkpoint as cu
+import slowfast.utils.distributed as du
+import slowfast.utils.logging as logging
+import slowfast.utils.metrics as metrics
+import slowfast.utils.misc as misc
+from slowfast.datasets import loader
+from slowfast.models import build_model
+from slowfast.utils.meters import AVAMeter, TrainMeter, ValMeter
+
+import slowfast.utils.multiprocessing as mpu
+from tools.train_net import train
+
+cfg = get_cfg()
+cfg.merge_from_file("configs/SLOWFAST_8x8_R50-UCF101.yaml")
+# cfg.NUM_GPUS = 1
+# cfg.TRAIN.BATCH_SIZE = 2
+cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
+
 msglogger = logging.getLogger()
 
 SUPPORTED_DATASETS = ('imagenet', 'cifar10', 'mnist', 'ucf101')
@@ -64,6 +93,7 @@ ALL_MODEL_NAMES = sorted(map(lambda s: s.lower(),
                             set(IMAGENET_MODEL_NAMES + CIFAR10_MODEL_NAMES + MNIST_MODEL_NAMES)))
 
 ALL_MODEL_NAMES.append("c3d_ucf101")
+ALL_MODEL_NAMES.append("slowfast_ucf101")
 
 # print("ALL: ", ALL_MODEL_NAMES)
 
@@ -236,7 +266,11 @@ def create_model(pretrained, dataset, arch, parallel=True, device_ids=None):
 
 def _create_ucf101_model(arch, pretrained):
     dataset = "ucf101"
-    model = C3D(101)
+
+    if "c3d" in arch:
+        model = C3D(101)
+    elif "slowfast" in arch:
+        model = build_model(cfg)
 
     return model
 
