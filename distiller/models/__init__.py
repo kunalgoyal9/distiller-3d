@@ -267,6 +267,7 @@ def _create_slowfast_ucf101_model(arch, pretrained):
 
     if "slowfast" in arch:
         model = build_model(cfg)
+        print("slowfast model: ", model)
     return model
     
 def _create_imagenet_model(arch, pretrained):
