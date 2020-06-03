@@ -35,12 +35,12 @@ def build_model(cfg):
     cur_device = torch.cuda.current_device()
     # Transfer the model to the current GPU device
     model = model.cuda(device=cur_device)
-    # Use multi-process data parallel model in the multi-gpu setting
-    # if cfg.NUM_GPUS > 1:
-        # Make model replica operate on the current device
-        # model = torch.nn.parallel.DistributedDataParallel(
-            # module=model, device_ids=[cur_device], output_device=cur_device
-        # )
-    print("model in slowfast: ", model)
+    Use multi-process data parallel model in the multi-gpu setting
+    if cfg.NUM_GPUS > 1:
+        Make model replica operate on the current device
+        model = torch.nn.parallel.DistributedDataParallel(
+            module=model, device_ids=[cur_device], output_device=cur_device
+        )
+    # print("model in slowfast: ", model)
 
     return model
