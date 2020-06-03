@@ -14,6 +14,7 @@ The registered object will be called with `obj(cfg)`.
 The call should return a `torch.nn.Module` object.
 """
 
+print("&&"*100)
 
 
 def build_model(cfg):
