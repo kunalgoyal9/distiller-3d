@@ -404,7 +404,7 @@ def _init_learner(args):
                          parallel=not args.load_serialized, device_ids=args.gpus)
     # print("_init_learner called: ")
     
-    # print(model)
+    print(model)
     
     compression_scheduler = None
 
