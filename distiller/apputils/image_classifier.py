@@ -404,7 +404,7 @@ def _init_learner(args):
                          parallel=not args.load_serialized, device_ids=args.gpus)
     # print("_init_learner called: ")
     
-    print("model: ", model)
+    # print("model: ", model)
     
     compression_scheduler = None
 
@@ -623,7 +623,7 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
         if not hasattr(args, 'kd_policy') or args.kd_policy is None:
             output = model(inputs)
-            # print("output: ", output)
+            print("output: ", output)
 
         else:
             output = args.kd_policy.forward(inputs)
