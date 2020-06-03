@@ -226,7 +226,7 @@ def create_model(pretrained, dataset, arch, parallel=True, device_ids=None):
             model = _create_mnist_model(arch, pretrained)
         elif dataset == 'ucf101':
             model = _create_ucf101_model(arch, pretrained)
-        elif dataset == 'ucf101_sf':
+        elif dataset == 'slowfast_ucf101':
             model = _create_slowfast_ucf101_model(arch, pretrained)
     except ValueError:
         if _is_registered_extension(arch, dataset, pretrained):
@@ -265,11 +265,11 @@ def _create_ucf101_model(arch, pretrained):
 def _create_slowfast_ucf101_model(arch, pretrained):
     dataset = "slowfast_ucf101"
     
-    print("slowfast ucf101 model called: ")
+    # print("slowfast ucf101 model called: ")
 
     if "slowfast" in arch:
         model = build_model(cfg)
-        print("slowfast model: ", model)
+        # print("slowfast model: ", model)
     
     return model
     
