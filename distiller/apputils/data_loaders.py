@@ -305,10 +305,10 @@ def classification_dataset_str_from_arch(arch):
         dataset = 'cifar10' 
     elif 'mnist' in arch:
         dataset = 'mnist' 
-    elif 'ucf101' in arch:
-        dataset = 'ucf101'
     elif 'slowfast_ucf101' in arch:
         dataset = 'slowfast_ucf101'
+    elif 'ucf101' in arch:
+        dataset = 'ucf101'
     else:
         dataset = 'imagenet'
     
@@ -384,7 +384,7 @@ def load_data(dataset, data_dir, batch_size, workers, validation_split=0.1, dete
 
         return train_loader, val_loader, test_loader, input_shape
     elif dataset == 'slowfast_ucf101':
-        
+
         train_loader = loader.construct_loader(cfg, "train")
         val_loader = loader.construct_loader(cfg, "val")
 
