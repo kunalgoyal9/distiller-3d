@@ -14,7 +14,6 @@ The registered object will be called with `obj(cfg)`.
 The call should return a `torch.nn.Module` object.
 """
 
-print("*******" * 100)
 
 
 def build_model(cfg):
@@ -27,6 +26,7 @@ def build_model(cfg):
     assert (
         cfg.NUM_GPUS <= torch.cuda.device_count()
     ), "Cannot use more GPU devices than available"
+    print("*******" * 100)
 
     # Construct the model
     name = cfg.MODEL.MODEL_NAME
