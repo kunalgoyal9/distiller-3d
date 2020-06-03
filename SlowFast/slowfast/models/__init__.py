@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
+import build as b
+
+import importlib
+
+importlib.reload(b)
 
 from .build import MODEL_REGISTRY, build_model  # noqa
 from .custom_video_model_builder import *  # noqa
