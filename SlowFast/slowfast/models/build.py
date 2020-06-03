@@ -14,6 +14,8 @@ The registered object will be called with `obj(cfg)`.
 The call should return a `torch.nn.Module` object.
 """
 
+print("*******" * 100)
+
 
 def build_model(cfg):
     """
@@ -40,5 +42,5 @@ def build_model(cfg):
             # module=model, device_ids=[cur_device], output_device=cur_device
         # )
     print("model in slowfast: ", model)
-    
+
     return model
