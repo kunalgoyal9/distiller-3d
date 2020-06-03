@@ -41,19 +41,7 @@ import pprint
 import torch
 from fvcore.nn.precise_bn import get_bn_modules, update_bn_stats
 
-# import slowfast.models.losses as losses
-# import slowfast.models.optimizer as optim
-# import slowfast.utils.checkpoint as cu
-# import slowfast.utils.distributed as du
-# import slowfast.utils.logging as logging
-# import slowfast.utils.metrics as metrics
-# import slowfast.utils.misc as misc
-# from slowfast.datasets import loader
 from slowfast.models import build_model
-# from slowfast.utils.meters import AVAMeter, TrainMeter, ValMeter
-
-# import slowfast.utils.multiprocessing as mpu
-# from tools.train_net import train
 
 cfg = get_cfg()
 cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8_R50-UCF101.yaml")
@@ -63,7 +51,7 @@ cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
 
 msglogger = logging.getLogger()
 
-SUPPORTED_DATASETS = ('imagenet', 'cifar10', 'mnist', 'ucf101')
+SUPPORTED_DATASETS = ('imagenet', 'cifar10', 'mnist', 'ucf101', 'slowfast_ucf101')
 
 # ResNet special treatment: we have our own version of ResNet, so we need to over-ride
 # TorchVision's version.
@@ -238,6 +226,8 @@ def create_model(pretrained, dataset, arch, parallel=True, device_ids=None):
             model = _create_mnist_model(arch, pretrained)
         elif dataset == 'ucf101':
             model = _create_ucf101_model(arch, pretrained)
+        elif dataset == 'ucf101_sf':
+            model = _create_slowfast_ucf101_model(arch, pretrained)
     except ValueError:
         if _is_registered_extension(arch, dataset, pretrained):
             model = _create_extension_model(arch, dataset)
@@ -269,11 +259,16 @@ def _create_ucf101_model(arch, pretrained):
 
     if "c3d" in arch:
         model = C3D(101)
-    elif "slowfast" in arch:
-        model = build_model(cfg)
 
     return model
 
+def _create_slowfast_ucf101_model(arch, pretrained):
+    dataset = "slowfast_ucf101"
+
+    if "slowfast" in arch:
+        model = build_model(cfg)
+    return model
+    
 def _create_imagenet_model(arch, pretrained):
     dataset = "imagenet"
     cadene = False

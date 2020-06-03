@@ -18,9 +18,9 @@ logger = logging.get_logger(__name__)
 
 
 @DATASET_REGISTRY.register()
-class Kinetics(torch.utils.data.Dataset):
+class Ucf101(torch.utils.data.Dataset):
     """
-    Kinetics video loader. Construct the Kinetics video loader, then sample
+    ucf11 video loader. Construct the ucf11 video loader, then sample
     clips from the videos. For training and validation, a single clip is
     randomly sampled from every video with random cropping, scaling, and
     flipping. For testing, multiple clips are uniformaly sampled from every
@@ -31,7 +31,7 @@ class Kinetics(torch.utils.data.Dataset):
 
     def __init__(self, cfg, mode, num_retries=10):
         """
-        Construct the Kinetics video loader with a given csv file. The format of
+        Construct the ucf11 video loader with a given csv file. The format of
         the csv file is:
         ```
         path_to_video_1 label_1
@@ -63,12 +63,12 @@ class Kinetics(torch.utils.data.Dataset):
         # video. For testing, NUM_ENSEMBLE_VIEWS clips are sampled from every
         # video. For every clip, NUM_SPATIAL_CROPS is cropped spatially from
         # the frames.
-        if self.mode in ["train", "val","test"]:
+        if self.mode in ["train", "val"]:
             self._num_clips = 1
-        # elif self.mode in ["test"]:
-        #     self._num_clips = (
-        #         cfg.TEST.NUM_ENSEMBLE_VIEWS * cfg.TEST.NUM_SPATIAL_CROPS
-        #     )
+        elif self.mode in ["test"]:
+            self._num_clips = (
+                cfg.TEST.NUM_ENSEMBLE_VIEWS * cfg.TEST.NUM_SPATIAL_CROPS
+            )
 
         logger.info("Constructing Kinetics {}...".format(mode))
         self._construct_loader()
@@ -89,8 +89,12 @@ class Kinetics(torch.utils.data.Dataset):
         self._spatial_temporal_idx = []
         with PathManager.open(path_to_file, "r") as f:
             for clip_idx, path_label in enumerate(f.read().splitlines()):
-                assert len(path_label.split()) == 2
-                path, label = path_label.split()
+                assert len(path_label.split(' ')) == 2
+                path, label = path_label.split(' ')
+                
+#                 print("*"*100)
+#                 print(path,'\n', label)
+#                 print("*"*100)
                 for idx in range(self._num_clips):
                     self._path_to_videos.append(
                         os.path.join(self.cfg.DATA.PATH_PREFIX, path)
@@ -124,64 +128,40 @@ class Kinetics(torch.utils.data.Dataset):
                 decoded, then return the index of the video. If not, return the
                 index of the video replacement that can be decoded.
         """
-        short_cycle_idx = None
-        # When short cycle is used, input index is a tupple.
-        if isinstance(index, tuple):
-            index, short_cycle_idx = index
-
-        if self.mode in ["train", "val", "test"]:
+        if self.mode in ["train", "val"]:
             # -1 indicates random sampling.
             temporal_sample_index = -1
             spatial_sample_index = -1
             min_scale = self.cfg.DATA.TRAIN_JITTER_SCALES[0]
             max_scale = self.cfg.DATA.TRAIN_JITTER_SCALES[1]
             crop_size = self.cfg.DATA.TRAIN_CROP_SIZE
-            if short_cycle_idx in [0, 1]:
-                crop_size = int(
-                    round(
-                        self.cfg.MULTIGRID.SHORT_CYCLE_FACTORS[short_cycle_idx]
-                        * self.cfg.MULTIGRID.DEFAULT_S
-                    )
-                )
-            if self.cfg.MULTIGRID.DEFAULT_S > 0:
-                # Decreasing the scale is equivalent to using a larger "span"
-                # in a sampling grid.
-                min_scale = int(
-                    round(
-                        float(min_scale)
-                        * crop_size
-                        / self.cfg.MULTIGRID.DEFAULT_S
-                    )
-                )
-        # elif self.mode in ["test"]:
-        #     temporal_sample_index = (
-        #         self._spatial_temporal_idx[index]
-        #         // self.cfg.TEST.NUM_SPATIAL_CROPS
-        #     )
-        #     # spatial_sample_index is in [0, 1, 2]. Corresponding to left,
-        #     # center, or right if width is larger than height, and top, middle,
-        #     # or bottom if height is larger than width.
-        #     spatial_sample_index = (
-        #         self._spatial_temporal_idx[index]
-        #         % self.cfg.TEST.NUM_SPATIAL_CROPS
-        #     )
-        #     min_scale, max_scale, crop_size = [self.cfg.DATA.TEST_CROP_SIZE] * 3
-        #     # The testing is deterministic and no jitter should be performed.
-        #     # min_scale, max_scale, and crop_size are expect to be the same.
-        #     assert len({min_scale, max_scale, crop_size}) == 1
+        elif self.mode in ["test"]:
+            temporal_sample_index = (
+                self._spatial_temporal_idx[index]
+                // self.cfg.TEST.NUM_SPATIAL_CROPS
+            )
+            # spatial_sample_index is in [0, 1, 2]. Corresponding to left,
+            # center, or right if width is larger than height, and top, middle,
+            # or bottom if height is larger than width.
+            spatial_sample_index = (
+                self._spatial_temporal_idx[index]
+                % self.cfg.TEST.NUM_SPATIAL_CROPS
+            )
+            min_scale, max_scale, crop_size = [self.cfg.DATA.TEST_CROP_SIZE] * 3
+            # The testing is deterministic and no jitter should be performed.
+            # min_scale, max_scale, and crop_size are expect to be the same.
+            assert len({min_scale, max_scale, crop_size}) == 1
         else:
             raise NotImplementedError(
                 "Does not support {} mode".format(self.mode)
             )
-        sampling_rate = utils.get_random_sampling_rate(
-            self.cfg.MULTIGRID.LONG_CYCLE_SAMPLING_RATE,
-            self.cfg.DATA.SAMPLING_RATE,
-        )
+
         # Try to decode and sample a clip from a video. If the video can not be
         # decoded, repeatly find a random video replacement that can be decoded.
         for _ in range(self._num_retries):
             video_container = None
             try:
+#                 print(self.cfg.DATA.DECODING_BACKEND)
                 video_container = container.get_video_container(
                     self._path_to_videos[index],
                     self.cfg.DATA_LOADER.ENABLE_MULTI_THREAD_DECODE,
@@ -197,11 +177,16 @@ class Kinetics(torch.utils.data.Dataset):
             if video_container is None:
                 index = random.randint(0, len(self._path_to_videos) - 1)
                 continue
+            
+
 
             # Decode video. Meta info is used to perform selective decoding.
+            
+#             print(video_container)
+            
             frames = decoder.decode(
                 video_container,
-                sampling_rate,
+                self.cfg.DATA.SAMPLING_RATE,
                 self.cfg.DATA.NUM_FRAMES,
                 temporal_sample_index,
                 self.cfg.TEST.NUM_ENSEMBLE_VIEWS,
@@ -210,6 +195,8 @@ class Kinetics(torch.utils.data.Dataset):
                 backend=self.cfg.DATA.DECODING_BACKEND,
                 max_spatial_scale=max_scale,
             )
+#             print("*"*100)
+            
 
             # If decoding failed (wrong format, video is too short, and etc),
             # select another video.

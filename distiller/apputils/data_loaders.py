@@ -33,9 +33,18 @@ from torch.utils.data import Dataset
 
 from torch.utils.data import DataLoader
 
+from slowfast.datasets import loader
+from slowfast.utils.parser import load_config, parse_args
+from slowfast.config.defaults import get_cfg
+
+cfg = get_cfg()
+cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8_R50-UCF101.yaml")
+# cfg.NUM_GPUS = 1
+# cfg.TRAIN.BATCH_SIZE = 2
+cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
 
 
-DATASETS_NAMES = ['imagenet', 'cifar10', 'mnist', 'ucf101']
+DATASETS_NAMES = ['imagenet', 'cifar10', 'mnist', 'ucf101', 'slowfast_ucf101']
 
 
 class VideoDataset(Dataset):
@@ -298,6 +307,8 @@ def classification_dataset_str_from_arch(arch):
         dataset = 'mnist' 
     elif 'ucf101' in arch:
         dataset = 'ucf101'
+    elif 'slowfast_ucf101' in arch:
+        dataset = 'slowfast_ucf101'
     else:
         dataset = 'imagenet'
     
@@ -310,7 +321,8 @@ def classification_num_classes(dataset):
     return {'cifar10': 10,
             'mnist': 10,
             'imagenet': 1000,
-            'ucf101': 101}.get(dataset, None)
+            'ucf101': 101,
+            'slowfast_ucf101': 101}.get(dataset, None)
 
 
 def classification_get_input_shape(dataset):
@@ -322,6 +334,8 @@ def classification_get_input_shape(dataset):
     elif dataset == 'mnist':
         return 1, 1, 28, 28
     elif dataset == 'ucf101':
+        return 1, 3, 16, 112, 112
+    elif dataset == 'slowfast_ucf101':
         return 1, 3, 16, 112, 112
     else:
         raise ValueError("dataset %s is not supported" % dataset)
@@ -369,7 +383,15 @@ def load_data(dataset, data_dir, batch_size, workers, validation_split=0.1, dete
         input_shape = __image_size(test_data)
 
         return train_loader, val_loader, test_loader, input_shape
+    elif dataset == 'slowfast_ucf101':
+        
+        train_loader = loader.construct_loader(cfg, "train")
+        val_loader = loader.construct_loader(cfg, "val")
 
+        input_shape = __image_size(test_data)
+
+        return train_loader, val_loader,  val_loader, input_shape
+        
     else:
         datasets_fn = __dataset_factory(dataset)
         

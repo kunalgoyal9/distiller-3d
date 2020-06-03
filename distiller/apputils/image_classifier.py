@@ -606,8 +606,12 @@ def train(train_loader, model, criterion, optimizer, epoch,
         # Measure data loading time
         data_time.add(time.time() - end)
         # print("compression_scheduler: ", args.device)
-        inputs, target = inputs.to(args.device)/255, target.to(args.device)
-        
+
+        if args.dataset == 'ucf101':
+            inputs, target = inputs.to(args.device)/255, target.to(args.device)
+        else:
+            inputs, target = inputs.to(args.device), target.to(args.device)
+                    
         # print("target: ", target)
         if first_chk:
             print("inputs.size(): ", inputs.size())
@@ -758,7 +762,12 @@ def _validate(data_loader, model, criterion, loggers, args, epoch=-1):
     end = time.time()
     with torch.no_grad():
         for validation_step, (inputs, target) in enumerate(data_loader):
-            inputs, target = inputs.to(args.device)/255, target.to(args.device)
+            
+            if args.dataset == 'ucf101':
+                inputs, target = inputs.to(args.device)/255, target.to(args.device)
+            else:
+                inputs, target = inputs.to(args.device), target.to(args.device)
+            
             # compute output from model
             output = model(inputs)
 
