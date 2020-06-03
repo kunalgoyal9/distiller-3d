@@ -39,4 +39,6 @@ def build_model(cfg):
         # model = torch.nn.parallel.DistributedDataParallel(
             # module=model, device_ids=[cur_device], output_device=cur_device
         # )
+    print("model in slowfast: ", model)
+    
     return model
