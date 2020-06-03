@@ -264,10 +264,13 @@ def _create_ucf101_model(arch, pretrained):
 
 def _create_slowfast_ucf101_model(arch, pretrained):
     dataset = "slowfast_ucf101"
+    
+    print("slowfast ucf101 model called: ")
 
     if "slowfast" in arch:
         model = build_model(cfg)
         print("slowfast model: ", model)
+    
     return model
     
 def _create_imagenet_model(arch, pretrained):
