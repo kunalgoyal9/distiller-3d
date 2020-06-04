@@ -385,10 +385,10 @@ def load_data(dataset, data_dir, batch_size, workers, validation_split=0.1, dete
         return train_loader, val_loader, test_loader, input_shape
     elif dataset == 'slowfast_ucf101':
 
-        train_loader = loader.construct_loader(cfg, "train")
-        val_loader = loader.construct_loader(cfg, "val")
+        train_loader, dataset_class = loader.construct_loader(cfg, "train")
+        val_loader, dataset_class = loader.construct_loader(cfg, "val")
 
-        input_shape = __image_size(test_data)
+        input_shape = __image_size(dataset_class, dataset)
 
         return train_loader, val_loader,  val_loader, input_shape
         
@@ -506,9 +506,12 @@ def imagenet_get_datasets(data_dir, load_train=True, load_test=True):
     return train_dataset, test_dataset
 
 
-def __image_size(dataset):
+def __image_size(dataset, name="abc"):
     # un-squeeze is used here to add the batch dimension (value=1), which is missing
-    return dataset[0][0].unsqueeze(0).size()
+    if name == 'slowfast_ucf101':
+        return dataset[0][0][0].unsqueeze(0).size() 
+    else:
+        return dataset[0][0].unsqueeze(0).size()
 
 
 def __deterministic_worker_init_fn(worker_id, seed=0):
