@@ -602,6 +602,8 @@ def train(train_loader, model, criterion, optimizer, epoch,
     
     first_chk = True
 
+    print("&&"*100)
+
     for train_step, (inputs, target) in enumerate(train_loader):
         # Measure data loading time
         data_time.add(time.time() - end)
