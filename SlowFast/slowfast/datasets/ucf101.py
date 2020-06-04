@@ -223,7 +223,7 @@ class Ucf101(torch.utils.data.Dataset):
 
             label = self._labels[index]
             frames = utils.pack_pathway_output(self.cfg, frames)
-            return frames, label, index, {}
+            return frames, label
         else:
             raise RuntimeError(
                 "Failed to fetch video after {} retries.".format(

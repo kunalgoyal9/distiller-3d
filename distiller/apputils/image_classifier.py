@@ -62,7 +62,7 @@ class ClassifierCompressor(object):
 
         self._infer_implicit_args(self.args)
 
-        print("__init__ self.args.dataset: ",self.args.dataset)
+        # print("__init__ self.args.dataset: ",self.args.dataset)
 
         self.logdir = _init_logger(self.args, script_dir)
         _config_determinism(self.args)
@@ -604,7 +604,7 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
     # print("train_loader: ", train_loader)
 
-    for train_step, (inputs, target, _, _) in enumerate(train_loader):
+    for train_step, (inputs, target) in enumerate(train_loader):
         # Measure data loading time
         data_time.add(time.time() - end)
         # print("compression_scheduler: ", args.device)
