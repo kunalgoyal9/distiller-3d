@@ -114,15 +114,16 @@ def construct_loader(cfg, split, is_precise_bn=False):
         #     collate_fn=detection_collate if cfg.DETECTION.ENABLE else None,
         # )
 
-        print("slow batch size: ", dataset[0][0][0].unsqueeze(0).size())
-        print("fast batch size: ", dataset[0][0][1].unsqueeze(0).size())
+        # print("slow batch size: ", dataset[0][0][0].unsqueeze(0).size())
+        # print("fast batch size: ", dataset[0][0][1].unsqueeze(0).size())
 
         loader = torch.utils.data.DataLoader(
             dataset,
             batch_size=cfg.TRAIN.BATCH_SIZE,
             shuffle=True,
             num_workers=cfg.DATA_LOADER.NUM_WORKERS)
-    return loader
+    
+    return loader, dataset
 
 
 def shuffle_dataset(loader, cur_epoch):
