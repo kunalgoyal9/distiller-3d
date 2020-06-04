@@ -568,7 +568,6 @@ def train(train_loader, model, criterion, optimizer, epoch,
     OVERALL_LOSS_KEY = 'Overall Loss'
     OBJECTIVE_LOSS_KEY = 'Objective Loss'
 
-    print("Hello my friend")
 
     losses = OrderedDict([(OVERALL_LOSS_KEY, tnt.AverageValueMeter()),
                           (OBJECTIVE_LOSS_KEY, tnt.AverageValueMeter())])
@@ -606,8 +605,12 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
     # print("train_loader: ", train_loader)
 
+    print("Hello my friend")
+
     for train_step, (inputs, target) in enumerate(train_loader):
         # Measure data loading time
+        print("Hello my friend")
+
         data_time.add(time.time() - end)
         # print("compression_scheduler: ", args.device)
         
