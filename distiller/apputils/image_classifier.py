@@ -606,6 +606,8 @@ def train(train_loader, model, criterion, optimizer, epoch,
         # Measure data loading time
         data_time.add(time.time() - end)
         # print("compression_scheduler: ", args.device)
+        
+        print("inputs: ", inputs,"target: ", target)
 
         if args.dataset == 'ucf101':
             inputs, target = inputs.to(args.device)/255, target.to(args.device)
