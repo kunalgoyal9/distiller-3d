@@ -114,6 +114,8 @@ def construct_loader(cfg, split, is_precise_bn=False):
         #     collate_fn=detection_collate if cfg.DETECTION.ENABLE else None,
         # )
 
+        print("dataset size: ", dataset[0][0].unsqueeze(0).size())
+
         loader = torch.utils.data.DataLoader(
             dataset,
             batch_size=cfg.TRAIN.BATCH_SIZE,
