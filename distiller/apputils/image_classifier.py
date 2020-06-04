@@ -602,19 +602,19 @@ def train(train_loader, model, criterion, optimizer, epoch,
     
     first_chk = True
 
-    print("train_loader: ", train_loader)
+    # print("train_loader: ", train_loader)
 
     for train_step, (inputs, target, _, _) in enumerate(train_loader):
         # Measure data loading time
         data_time.add(time.time() - end)
         # print("compression_scheduler: ", args.device)
         
-        print("inputs: ", inputs,"target: ", target)
+        # print("inputs: ", inputs,"target: ", target)
 
         if args.dataset == 'ucf101':
             inputs, target = inputs.to(args.device)/255, target.to(args.device)
         else:
-            inputs, target = inputs.to(args.device), target.to(args.device)
+            inputs[0], inputs[1], target = inputs[0].to(args.device), inputs[1].to(args.device), target.to(args.device)
                     
         # print("target: ", target)
         if first_chk:
