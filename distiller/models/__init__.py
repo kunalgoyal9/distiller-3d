@@ -42,6 +42,7 @@ import torch
 from fvcore.nn.precise_bn import get_bn_modules, update_bn_stats
 
 from slowfast.models import build_model
+import slowfast.utils.checkpoint as cu
 
 cfg = get_cfg()
 cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8_R50-UCF101.yaml")
@@ -269,6 +270,7 @@ def _create_slowfast_ucf101_model(arch, pretrained):
 
     if "slowfast" in arch:
         model = build_model(cfg)
+        cu.load_checkpoint(cfg.TRAIN.CHECKPOINT_FILE_PATH, model, False, None, False, convert_from_caffe2=True)
         # print("slowfast model: ", model)
     
     return model
