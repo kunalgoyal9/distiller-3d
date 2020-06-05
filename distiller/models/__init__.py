@@ -271,6 +271,13 @@ def _create_slowfast_ucf101_model(arch, pretrained):
     if "slowfast" in arch:
         model = build_model(cfg)
         cu.load_checkpoint(cfg.TRAIN.CHECKPOINT_FILE_PATH, model, False, None, False, convert_from_caffe2=True)
+        
+        for param in model.parameters():
+            param.requires_grad = False
+
+        for param in model.head.parameters():
+            param.requires_grad = True
+            
         # print("slowfast model: ", model)
     
     return model

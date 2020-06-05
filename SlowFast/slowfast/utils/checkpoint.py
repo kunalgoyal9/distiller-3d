@@ -231,6 +231,7 @@ def load_checkpoint(
                     state_dict[converted_key] = torch.tensor(
                         caffe2_checkpoint["blobs"][key]
                     ).clone()
+                    print("done")
                     logger.info(
                         "{}: {} => {}: {}".format(
                             key,
