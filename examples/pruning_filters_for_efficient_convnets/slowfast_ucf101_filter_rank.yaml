@@ -112,17 +112,16 @@
 # sys     7m16.697s
 
 version: 1
-# pruners:
-#   filter_pruner_60:
-#     class: 'L1RankedStructureParameterPruner'
-#     group_type: Filters
-#     desired_sparsity: 0.6
-#     weights: [
-#       module.features.0.weight,
-#       module.features.3.weight,
-#       module.features.6.weight,
-#       module.features.8.weight,
-#       ]
+pruners:
+  filter_pruner_60:
+    class: 'L1RankedStructureParameterPruner'
+    group_type: Filters
+    desired_sparsity: 0.4
+    weights: [
+      s2.pathway0_res0.branch2.b.weight,
+      s2.pathway0_res1.branch2.b.weight,
+      s2.pathway0_res2.branch2.b.weight
+      ]
 
   # filter_pruner_50:
   #   class: 'L1RankedStructureParameterPruner'
