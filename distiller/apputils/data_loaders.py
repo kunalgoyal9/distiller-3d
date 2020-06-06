@@ -336,7 +336,7 @@ def classification_get_input_shape(dataset):
     elif dataset == 'ucf101':
         return 1, 3, 16, 112, 112
     elif dataset == 'slowfast_ucf101':
-        return 1, 3, 16, 112, 112
+        return (1, 3, 64, 224, 224),(1,3,16,224,224)
     else:
         raise ValueError("dataset %s is not supported" % dataset)
 
