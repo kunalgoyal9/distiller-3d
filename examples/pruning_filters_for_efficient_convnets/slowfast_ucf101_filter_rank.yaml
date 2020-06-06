@@ -118,13 +118,13 @@ pruners:
     group_type: Filters
     desired_sparsity: 0.6
     weights: [
-      s2.pathway0_res0.branch2.b.weight,
-      s2.pathway0_res1.branch2.b.weight,
-      s2.pathway0_res2.branch2.b.weight,
+      module.s2.pathway0_res0.branch2.b.weight,
+      module.s2.pathway0_res1.branch2.b.weight,
+      module.s2.pathway0_res2.branch2.b.weight,
 
-      s2.pathway1_res0.branch2.b.weight,
-      s2.pathway1_res1.branch2.b.weight,
-      s2.pathway1_res2.branch2.b.weight
+      module.s2.pathway1_res0.branch2.b.weight,
+      module.s2.pathway1_res1.branch2.b.weight,
+      module.s2.pathway1_res2.branch2.b.weight
       
       ]
 
@@ -133,13 +133,13 @@ pruners:
     group_type: Filters
     desired_sparsity: 0.5
     weights: [
-      s3.pathway0_res0.branch2.b.weight,
-      s3.pathway0_res1.branch2.b.weight,
-      s3.pathway0_res2.branch2.b.weight,      
+      module.s3.pathway0_res0.branch2.b.weight,
+      module.s3.pathway0_res1.branch2.b.weight,
+      module.s3.pathway0_res2.branch2.b.weight,      
 
-      s3.pathway1_res0.branch2.b.weight,
-      s3.pathway1_res1.branch2.b.weight,
-      s3.pathway1_res2.branch2.b.weight]
+      module.s3.pathway1_res0.branch2.b.weight,
+      module.s3.pathway1_res1.branch2.b.weight,
+      module.s3.pathway1_res2.branch2.b.weight]
 
   # filter_pruner_10:
   #   class: 'L1RankedStructureParameterPruner'
@@ -152,13 +152,13 @@ pruners:
     group_type: Filters
     desired_sparsity: 0.4
     weights: [
-      s4.pathway0_res0.branch2.b.weight,
-      s4.pathway0_res1.branch2.b.weight,
-      s4.pathway0_res2.branch2.b.weight,      
+      module.s4.pathway0_res0.branch2.b.weight,
+      module.s4.pathway0_res1.branch2.b.weight,
+      module.s4.pathway0_res2.branch2.b.weight,      
 
-      s4.pathway1_res0.branch2.b.weight,
-      s4.pathway1_res1.branch2.b.weight,
-      s4.pathway1_res2.branch2.b.weight]
+      module.s4.pathway1_res0.branch2.b.weight,
+      module.s4.pathway1_res1.branch2.b.weight,
+      module.s4.pathway1_res2.branch2.b.weight]
 
 
 extensions:
