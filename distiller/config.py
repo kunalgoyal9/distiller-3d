@@ -217,9 +217,9 @@ def build_component(model, name, user_args, **extra_args):
     valid_args['name'] = name
     final_valid_args, _ = filter_kwargs(valid_args, class_.__init__)
 
-    print("class_", class_)
-    print("final_valid_args: ", final_valid_args)
-    print("extra_args: ", extra_args)
+    # print("class_", class_)
+    # print("final_valid_args: ", final_valid_args)
+    # print("extra_args: ", extra_args)
     instance = class_(**final_valid_args)
     return instance
 
