@@ -188,7 +188,7 @@ policies:
       instance_name: filter_pruner_40
     epochs: [0]
 
-  - pruner:
+  # - pruner:
   #     instance_name: filter_pruner_10
   #   epochs: [0]
 
