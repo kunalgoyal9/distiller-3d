@@ -592,8 +592,8 @@ def train(train_loader, model, criterion, optimizer, epoch,
     
     # print(model)
 
-    for mod_name, m in model.named_modules():
-        print("mod_name: ", mod_name)
+    # for mod_name, m in model.named_modules():
+        # print("mod_name: ", mod_name)
 
 
 
