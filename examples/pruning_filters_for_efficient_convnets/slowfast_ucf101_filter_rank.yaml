@@ -180,15 +180,15 @@ policies:
       instance_name: filter_pruner_60
     epochs: [0]
 
-  # - pruner:
-  #     instance_name: filter_pruner_50
-  #   epochs: [0]
+  - pruner:
+      instance_name: filter_pruner_50
+    epochs: [0]
 
-  # - pruner:
-  #     instance_name: filter_pruner_30
-  #   epochs: [0]
+  - pruner:
+      instance_name: filter_pruner_40
+    epochs: [0]
 
-  # - pruner:
+  - pruner:
   #     instance_name: filter_pruner_10
   #   epochs: [0]
 
