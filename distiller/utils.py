@@ -571,8 +571,8 @@ def has_children(module):
 def _validate_input_shape(dataset, input_shape):
     if dataset:
         try:
-            print(dataset)
-            print("distiller.apputils.classification_get_input_shape(dataset): ", tuple(distiller.apputils.classification_get_input_shape(dataset)))
+            # print(dataset)
+            # print("distiller.apputils.classification_get_input_shape(dataset): ", tuple(distiller.apputils.classification_get_input_shape(dataset)))
             
             return tuple(distiller.apputils.classification_get_input_shape(dataset))
         except ValueError:
@@ -617,7 +617,7 @@ def get_dummy_input(dataset=None, device=None, input_shape=None):
             return create_single(shape)
         return tuple(create_recurse(s) for s in shape)
 
-    print("input_shape: ", input_shape)
+    # print("input_shape: ", input_shape)
     input_shape = _validate_input_shape(dataset, input_shape)
 
     

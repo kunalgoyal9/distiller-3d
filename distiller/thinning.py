@@ -96,6 +96,9 @@ def remove_filters(model, zeros_mask_dict, arch, dataset, optimizer):
 
 def _create_graph(dataset, model):
     dummy_input = distiller.get_dummy_input(dataset, distiller.model_device(model))
+    
+    print("dummy_input in create_graph: ", dummy_input)
+
     return SummaryGraph(model, dummy_input)
 
 
