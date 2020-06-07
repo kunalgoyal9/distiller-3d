@@ -207,7 +207,7 @@ pruners:
     group_type: Filters
     desired_sparsity: 0.4
     weights: [
-      module.s3_fuse.conv_f2s.weight
+      module.s2.pathway0_res2.branch2.c.weight
       ]
 
 
@@ -226,21 +226,21 @@ lr_schedulers:
 
 
 policies:
-  - pruner:
-      instance_name: filter_pruner_60
-    epochs: [0]
-
-  - pruner:
-      instance_name: filter_pruner_50
-    epochs: [0]
-
-  - pruner:
-      instance_name: filter_pruner_40
-    epochs: [0]
+  # - pruner:
+  #     instance_name: filter_pruner_60
+  #   epochs: [0]
 
   # - pruner:
-  #     instance_name: filter_pruner_40_experiments
+  #     instance_name: filter_pruner_50
   #   epochs: [0]
+
+  # - pruner:
+  #     instance_name: filter_pruner_40
+  #   epochs: [0]
+
+  - pruner:
+      instance_name: filter_pruner_40_experiments
+    epochs: [0]
 
   - extension:
       instance_name: net_thinner
