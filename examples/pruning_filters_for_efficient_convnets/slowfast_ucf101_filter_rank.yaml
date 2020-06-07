@@ -165,7 +165,7 @@ pruners:
     group_type: Filters
     desired_sparsity: 0.4
     weights: [
-      module.s2.pathway0_res0.branch2.a.weight
+      module.s2.pathway0_res0.branch2.c.weight
       ]
 
 
