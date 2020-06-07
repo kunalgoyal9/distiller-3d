@@ -159,6 +159,14 @@ pruners:
       module.s4.pathway1_res0.branch2.b.weight,
       module.s4.pathway1_res1.branch2.b.weight,
       module.s4.pathway1_res2.branch2.b.weight]
+  
+  filter_pruner_40_experiments:
+    class: 'L1RankedStructureParameterPruner'
+    group_type: Filters
+    desired_sparsity: 0.4
+    weights: [
+      module.s2.pathway0_res0.branch1.weight,
+      ]
 
 
 extensions:
@@ -176,21 +184,21 @@ lr_schedulers:
 
 
 policies:
-  - pruner:
-      instance_name: filter_pruner_60
-    epochs: [0]
-
-  - pruner:
-      instance_name: filter_pruner_50
-    epochs: [0]
-
-  - pruner:
-      instance_name: filter_pruner_40
-    epochs: [0]
+  # - pruner:
+  #     instance_name: filter_pruner_60
+  #   epochs: [0]
 
   # - pruner:
-  #     instance_name: filter_pruner_10
+  #     instance_name: filter_pruner_50
   #   epochs: [0]
+
+  # - pruner:
+  #     instance_name: filter_pruner_40
+  #   epochs: [0]
+
+  - pruner:
+      instance_name: filter_pruner_40_experiments
+    epochs: [0]
 
   - extension:
       instance_name: net_thinner
@@ -200,4 +208,4 @@ policies:
       instance_name: exp_finetuning_lr
     starting_epoch: 0
     ending_epoch: 300
-    frequency: 300
+    frequency: 1 
