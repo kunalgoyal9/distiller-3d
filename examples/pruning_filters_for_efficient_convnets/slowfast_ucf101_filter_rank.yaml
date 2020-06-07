@@ -118,6 +118,14 @@ pruners:
     group_type: Filters
     desired_sparsity: 0.6
     weights: [
+      module.s2.pathway0_res0.branch2.a.weight,
+      module.s2.pathway0_res1.branch2.a.weight,
+      module.s2.pathway0_res2.branch2.a.weight,
+
+      module.s2.pathway1_res0.branch2.a.weight,
+      module.s2.pathway1_res1.branch2.a.weight,
+      module.s2.pathway1_res2.branch2.a.weight,
+
       module.s2.pathway0_res0.branch2.b.weight,
       module.s2.pathway0_res1.branch2.b.weight,
       module.s2.pathway0_res2.branch2.b.weight,
@@ -133,13 +141,22 @@ pruners:
     group_type: Filters
     desired_sparsity: 0.5
     weights: [
+      module.s3.pathway0_res0.branch2.a.weight,
+      module.s3.pathway0_res1.branch2.a.weight,
+      module.s3.pathway0_res2.branch2.a.weight,      
+
+      module.s3.pathway1_res0.branch2.a.weight,
+      module.s3.pathway1_res1.branch2.a.weight,
+      module.s3.pathway1_res2.branch2.a.weight,
+
       module.s3.pathway0_res0.branch2.b.weight,
       module.s3.pathway0_res1.branch2.b.weight,
       module.s3.pathway0_res2.branch2.b.weight,      
 
       module.s3.pathway1_res0.branch2.b.weight,
       module.s3.pathway1_res1.branch2.b.weight,
-      module.s3.pathway1_res2.branch2.b.weight]
+      module.s3.pathway1_res2.branch2.b.weight
+      ]
 
   # filter_pruner_10:
   #   class: 'L1RankedStructureParameterPruner'
@@ -152,13 +169,38 @@ pruners:
     group_type: Filters
     desired_sparsity: 0.4
     weights: [
+      module.s4.pathway0_res0.branch2.a.weight,
+      module.s4.pathway0_res1.branch2.a.weight,
+      module.s4.pathway0_res2.branch2.a.weight,      
+
+      module.s4.pathway1_res0.branch2.a.weight,
+      module.s4.pathway1_res1.branch2.a.weight,
+      module.s4.pathway1_res2.branch2.a.weight,
+
       module.s4.pathway0_res0.branch2.b.weight,
       module.s4.pathway0_res1.branch2.b.weight,
       module.s4.pathway0_res2.branch2.b.weight,      
 
       module.s4.pathway1_res0.branch2.b.weight,
       module.s4.pathway1_res1.branch2.b.weight,
-      module.s4.pathway1_res2.branch2.b.weight]
+      module.s4.pathway1_res2.branch2.b.weight,
+
+      module.s5.pathway0_res0.branch2.a.weight,
+      module.s5.pathway0_res1.branch2.a.weight,
+      module.s5.pathway0_res2.branch2.a.weight,      
+
+      module.s5.pathway1_res0.branch2.a.weight,
+      module.s5.pathway1_res1.branch2.a.weight,
+      module.s5.pathway1_res2.branch2.a.weight,
+
+      module.s5.pathway0_res0.branch2.b.weight,
+      module.s5.pathway0_res1.branch2.b.weight,
+      module.s5.pathway0_res2.branch2.b.weight,      
+
+      module.s5.pathway1_res0.branch2.b.weight,
+      module.s5.pathway1_res1.branch2.b.weight,
+      module.s5.pathway1_res2.branch2.b.weight
+      ]
   
   filter_pruner_40_experiments:
     class: 'L1RankedStructureParameterPruner'
@@ -184,21 +226,21 @@ lr_schedulers:
 
 
 policies:
-  # - pruner:
-  #     instance_name: filter_pruner_60
-  #   epochs: [0]
-
-  # - pruner:
-  #     instance_name: filter_pruner_50
-  #   epochs: [0]
-
-  # - pruner:
-  #     instance_name: filter_pruner_40
-  #   epochs: [0]
+  - pruner:
+      instance_name: filter_pruner_60
+    epochs: [0]
 
   - pruner:
-      instance_name: filter_pruner_40_experiments
+      instance_name: filter_pruner_50
     epochs: [0]
+
+  - pruner:
+      instance_name: filter_pruner_40
+    epochs: [0]
+
+  # - pruner:
+  #     instance_name: filter_pruner_40_experiments
+  #   epochs: [0]
 
   - extension:
       instance_name: net_thinner
