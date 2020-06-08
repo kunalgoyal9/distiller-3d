@@ -256,9 +256,9 @@ policies:
 
   - quantizer:
       instance_name: dorefa_quantizer
-      starting_epoch: 0
-      ending_epoch: 200
-      frequency: 1
+    starting_epoch: 0
+    ending_epoch: 200
+    frequency: 1
       
   - lr_scheduler:
       instance_name: exp_finetuning_lr
