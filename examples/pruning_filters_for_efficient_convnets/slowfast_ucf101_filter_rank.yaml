@@ -212,6 +212,12 @@ pruners:
       # module.s2.pathway0_res1.branch
       ]
 
+quantizers:
+  dorefa_quantizer:
+    class: DorefaQuantizer
+    bits_activations: 8
+    bits_weights: 8
+
 
 extensions:
   net_thinner:
@@ -228,26 +234,32 @@ lr_schedulers:
 
 
 policies:
-  - pruner:
-      instance_name: filter_pruner_70
-    epochs: [0]
+  # - pruner:
+  #     instance_name: filter_pruner_70
+  #   epochs: [0]
 
-  - pruner:
-      instance_name: filter_pruner_60
-    epochs: [0]
+  # - pruner:
+  #     instance_name: filter_pruner_60
+  #   epochs: [0]
 
-  - pruner:
-      instance_name: filter_pruner_40
-    epochs: [0]
+  # - pruner:
+  #     instance_name: filter_pruner_40
+  #   epochs: [0]
 
   # - pruner:
   #     instance_name: filter_pruner_40_experiments
   #   epochs: [0]
 
-  - extension:
-      instance_name: net_thinner
-    epochs: [0]
+  # - extension:
+  #     instance_name: net_thinner
+  #   epochs: [0]
 
+  - quantizer:
+      instance_name: dorefa_quantizer
+      starting_epoch: 0
+      ending_epoch: 200
+      frequency: 1
+      
   - lr_scheduler:
       instance_name: exp_finetuning_lr
     starting_epoch: 0
