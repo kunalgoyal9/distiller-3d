@@ -27,6 +27,22 @@
     > 3 batch 10 epochs 11.22 sec
     > 11 batch 10 epochs 34.55 sec
 
+   - **Major Files**
+Branch -> master
+        | Filename | Info |
+        | ------ | ------ |
+        | finetune_3d-UCF11.py | This file uses UCF11 dataset with C3D architecture. We can specify the percentage we want our model to be prunned. I tried pruning percentage ranging from 10 to 90 percent and got same results. As the dataset has only 11 classes, so 90 percent prunned model also worked fine. |
+        | finetune_3d-UCF101.py | Similar to finetune_3d-UCF11.py, this file prune C3D like architectures for UCF101 datasets. |
+        | prune .py | This file is a dependency of finetune_3d* file. This defines the algorithm of pruning(majorly how we needs to change the output and input channels of the prunned layer and the following layer).  |
+
+- ###  [Resnet Like architectures](https://arxiv.org/pdf/1608.08710.pdf)
+    - This paper taught how much we can filter prune architectures like VGG-16, Resnet-110. 
+    - They showed "How to solve the data dependency problem in Resudual connection".
+    - They conduct sensitivity analysis(how much we can prune individual layer) for CNNs including ResNets.
+    <center> <img src="Residual prunning.png"></center>
+    <center> <img src="Sensitivity analysis .png"></center>
+
+
 
 
 You can also:
@@ -192,6 +208,3 @@ MIT
    [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>
    [PlMe]: <https://github.com/joemccann/dillinger/tree/master/plugins/medium/README.md>
    [PlGa]: <https://github.com/RahulHP/dillinger/blob/master/plugins/googleanalytics/README.md>
-
-
-
