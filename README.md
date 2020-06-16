@@ -45,6 +45,7 @@ Branch -> master
     <center> <img src="Sensitivity analysis .png"></center>
 
     - **Code**
+    
     [This](https://github.com/eeric/channel_prune) is the only open sourced implementation I found to understand this process. **Note-** There were few bugs in this code, I made a pull request to run this code seamlessly. If it is not merged yet Find [here](https://github.com/kunalgoyal9/channel_prune) :)
 
 
