@@ -40,10 +40,14 @@ Branch -> master
     - They showed "How to solve the data dependency problem in Resudual connection".
     - They conduct sensitivity analysis(how much we can prune individual layer) for CNNs including ResNets.
     - This screenshot shows the data dependecy problem of resiudal block.
-<center> <img src="Residual prunning.png"></center>
-    - This screenshot shows how much each layer is valued in entire network. Also shows the relationship between different layers in resiudal block.
-    <center> <img src="Sensitivity analysis .png"></center>
 
+<center> <img src="Residual prunning.png"></center>
+
+    - This screenshot shows how much each layer is valued in entire network. Also shows the relationship between different layers in resiudal block.
+
+<center> <img src="Sensitivity analysis .png"></center>
+
+    
     - **Code**
     
     [This](https://github.com/eeric/channel_prune) is the only open sourced implementation I found to understand this process. **Note-** There were few bugs in this code, I made a pull request to run this code seamlessly. If it is not merged yet Find [here](https://github.com/kunalgoyal9/channel_prune) :)
