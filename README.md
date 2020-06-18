@@ -47,4 +47,16 @@ Branch -> master
 
     - **Code**
     [This](https://github.com/eeric/channel_prune) is the only open sourced implementation I found to understand this process. **Note-** There were few bugs in this code, I made a pull request to run this code seamlessly. If it is not merged yet Find [here](https://github.com/kunalgoyal9/channel_prune) :)
-
+    
+- ### [Distiller](https://gitlab.com/ultrainstinctAI/liteinstinct/-/tree/distiller-3d)
+    - Through this framework we can prune any model. Also there is good [tutorial](https://nervanasystems.github.io/distiller/usage.html) from nervana.
+    - There is an app in **distiller-3d/examples/classifier_compression/e.py** called classifier_compression which uses **yaml** config files in **distiller/examples/pruning_filters_for_efficient_convnets/slowfast_ucf101_filter_rank.yaml**
+    - ##### Major Changes made:
+        - I have deleted major assert statements in the thinning.py, policy.py, pruning/ranked_structures_pruner.py files to perform 3D convolution.
+        - I have added model in **distiller-3d/distiller/models/__init__.py** file and dataset for UCF101 in **distiller-3d/distiller/apputils/data_loaders.py** files. All of these follows the similar pattern to that with slowfast repo.
+    - ##### Command:
+        - Before running the command, we need to add Slowfast repo in PYTHONPATH as 
+        ``` export PYTHONPATH=/workspace/Kugos/SlowFast/slowfast:$PYTHONPATH ```
+        - ```python3 compress_classifier.py -a=slowfast_ucf101 -p=50 --epochs=70 --lr=0.1 --DATASET_DIR="." --compress=../pruning_filters_for_efficient_convnets/slowfast_ucf101_filter_rank.yaml --resume-from=logs/slowfast_92_percent/ --batch-size=2 --reset-optimizer --vs=0 ```
+        - **NOTE:** I have inplicitly specified the ``` --DATASET_DIR ``` in **dataset .py** file.
+        - 
