@@ -29,11 +29,7 @@
 
    - **Major Files**
 Branch -> master
-        | Filename | Info |
-        | ------ | ------ |
-        | finetune_3d-UCF11.py | This file uses UCF11 dataset with C3D architecture. We can specify the percentage we want our model to be prunned. I tried pruning percentage ranging from 10 to 90 percent and got same results. As the dataset has only 11 classes, so 90 percent prunned model also worked fine. |
-        | finetune_3d-UCF101.py | Similar to finetune_3d-UCF11.py, this file prune C3D like architectures for UCF101 datasets. |
-        | prune .py | This file is a dependency of finetune_3d* file. This defines the algorithm of pruning(majorly how we needs to change the output and input channels of the prunned layer and the following layer).  |
+       <center> <img src="Major Files in master.png"></center>
 
 - ###  [Resnet Like architectures](https://arxiv.org/pdf/1608.08710.pdf)
     - This paper taught how much we can filter prune architectures like VGG-16, Resnet-110. 
