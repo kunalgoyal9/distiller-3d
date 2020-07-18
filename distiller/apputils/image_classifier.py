@@ -497,7 +497,7 @@ def save_collectors_data(collectors, directory):
 def load_data(args, fixed_subset=False, sequential=False, load_train=True, load_val=True, load_test=True):
     test_only = not load_train and not load_val
     
-    # print("args: ",  args)
+    print("args: ",  args.dataset)
     
     train_loader, val_loader, test_loader, _ = apputils.load_data(args.dataset,
                               os.path.expanduser(args.data), args.batch_size,
