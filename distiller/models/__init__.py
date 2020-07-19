@@ -93,7 +93,7 @@ class C3D(nn.Module):
     The C3D network.
     """
 
-    def __init__(self, num_classes, pretrained=False):
+    def __init__(self, num_classes, pretrained=True):
         super(C3D, self).__init__()
 
         self.conv1 = nn.Conv3d(3, 64, kernel_size=(3, 3, 3), padding=(1, 1, 1))
@@ -103,26 +103,26 @@ class C3D(nn.Module):
         self.pool2 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2))
 
         self.conv3 = nn.Conv3d(128, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
-        # self.conv3b = nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        self.conv3b = nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
         self.pool3 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2))
 
         self.conv4 = nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
-        # self.conv4b = nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        self.conv4b = nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1))
         self.pool4 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2))
 
         self.conv5 = nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
-        # self.conv5b = nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        self.conv5b = nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1))
         self.pool5 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2), padding=(0, 1, 1))
 
-        self.fc6 = nn.Linear(4096, 2048)
-        self.fc7 = nn.Linear(2048, 2048)
-        self.fc8 = nn.Linear(2048, num_classes)
+        self.fc6 = nn.Linear(8192, 4096)
+        self.fc7 = nn.Linear(4096, 4096)
+        self.fc8 = nn.Linear(4096, num_classes)
 
         self.dropout = nn.Dropout(p=0.5)
 
         self.relu = nn.ReLU()
 
-        # self.__init_weight()
+        self.__init_weight()
 
         if pretrained:
             self.__load_pretrained_weights()
@@ -136,15 +136,15 @@ class C3D(nn.Module):
         x = self.pool2(x)
 
         x = self.relu(self.conv3(x))
-        # x = self.relu(self.conv3b(x))
+        x = self.relu(self.conv3b(x))
         x = self.pool3(x)
 
         x = self.relu(self.conv4(x))
-        # x = self.relu(self.conv4b(x))
+        x = self.relu(self.conv4b(x))
         x = self.pool4(x)
 
         x = self.relu(self.conv5(x))
-        # x = self.relu(self.conv5b(x))
+        x = self.relu(self.conv5b(x))
         x = self.pool5(x)
 
         x = x.view(-1, 4096)
@@ -156,7 +156,48 @@ class C3D(nn.Module):
         logits = self.fc8(x)
 
         return logits
+    def __load_pretrained_weights(self):
+        """Initialiaze network."""
+        corresp_name = {
+                        # Conv1
+                        "conv1.weight": "conv1.weight",
+                        "conv1.bias": "conv1.bias",
+                        # Conv2
+                        "conv2.weight": "conv2.weight",
+                        "conv2.bias": "conv2.bias",
+                        # Conv3a
+                        "conv3a.weight": "conv3a.weight",
+                        "conv3a.bias": "conv3a.bias",
+                        # Conv3b
+                        "conv3b.weight": "conv3b.weight",
+                        "conv3b.bias": "conv3b.bias",
+                        # Conv4a
+                        "conv4a.weight": "conv4a.weight",
+                        "conv4a.bias": "conv4a.bias",
+                        # Conv4b
+                        "conv4b.weight": "conv4b.weight",
+                        "conv4b.bias": "conv4b.bias",
+                        # Conv5a
+                        "conv5a.weight": "conv5a.weight",
+                        "conv5a.bias": "conv5a.bias",
+                         # Conv5b
+                         "conv5b.weight": "conv5b.weight",
+                        "conv5b.bias": "conv5b.bias",
+                        # fc6
+                        "fc6.weight": "fc6.weight",
+                        "fc6.bias": "fc6.bias",
+                        # fc7
+                        "fc7.weight": "fc7.weight",
+                        "fc7.bias": "fc7.bias",
+                        }
 
+        p_dict = torch.load('/workspace/Kugos/distiller-3d/c3d_sport_1m.pickle')
+        s_dict = self.state_dict()
+        for name in p_dict:
+            if name not in corresp_name:
+                continue
+            s_dict[corresp_name[name]] = p_dict[name]
+        self.load_state_dict(s_dict)
 
 def patch_torchvision_mobilenet_v2(model):
     """

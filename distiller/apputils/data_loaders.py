@@ -62,7 +62,7 @@ class VideoDataset(Dataset):
 
     def __init__(self, dataset='ucf101', split='train', clip_len=16, preprocess=False, data_dir=""):
         self.root_dir = data_dir
-        self.output_dir = data_dir + "_segregated"
+        self.output_dir = data_dir + "_segregated_official"
         folder = os.path.join(self.output_dir, split)
         self.clip_len = clip_len
         self.split = split
@@ -174,34 +174,77 @@ class VideoDataset(Dataset):
             os.mkdir(os.path.join(self.output_dir, 'test'))
 
         # Split train/val/test sets
-        for file in os.listdir(self.root_dir):
-            file_path = os.path.join(self.root_dir, file)
-            video_files = [name for name in os.listdir(file_path)]
+        train_d = open("/workspace/Data/ucf_splits/official/train_02.txt")
+        test_d = open("/workspace/Data/ucf_splits/official/test_02.txt")
 
-            train_and_valid, test = train_test_split(video_files, test_size=0.2, random_state=42)
-            train, val = train_test_split(train_and_valid, test_size=0.2, random_state=42)
+        train_lines = train_d.readlines()
+        test_lines = test_d.readlines()
 
-            train_dir = os.path.join(self.output_dir, 'train', file)
-            val_dir = os.path.join(self.output_dir, 'val', file)
-            test_dir = os.path.join(self.output_dir, 'test', file)
+        for line in train_lines:
+            video_path = line.split(" ")[0]
+            file = video_path.split('/')[-2]
+            video = video_path.split('/')[-1]
 
+            train_dir = os.path.join(self.outpu_dir, 'train', file)
+            
             if not os.path.exists(train_dir):
                 os.mkdir(train_dir)
-            if not os.path.exists(val_dir):
-                os.mkdir(val_dir)
+            
+            self.process_video(video, file, train_dir)
+
+        for line in test_lines:
+            video_path = line.split(" ")[0]
+            file = video_path.split('/')[-2]
+            video = video_path.split('/')[-1]
+
+            test_dir = os.path.join(self.outpu_dir, 'test', file)
+            
             if not os.path.exists(test_dir):
                 os.mkdir(test_dir)
+            
+            self.process_video(video, file, test_dir)
 
-            for video in train:
-                self.process_video(video, file, train_dir)
+        for line in test_lines:
+            video_path = line.split(" ")[0]
+            file = video_path.split('/')[-2]
+            video = video_path.split('/')[-1]
 
-            for video in val:
-                self.process_video(video, file, val_dir)
-
-            for video in test:
-                self.process_video(video, file, test_dir)
+            valid_dir = os.path.join(self.outpu_dir, 'valid', file)
+            
+            if not os.path.exists(valid_dir):
+                os.mkdir(valid_dir)
+            
+            self.process_video(video, file, valid_dir)
 
         print('Preprocessing finished.')
+
+        # for file in os.listdir(self.root_dir):
+        #     file_path = os.path.join(self.root_dir, file)
+        #     video_files = [name for name in os.listdir(file_path)]
+
+        #     train_and_valid, test = train_test_split(video_files, test_size=0.2, random_state=42)
+        #     train, val = train_test_split(train_and_valid, test_size=0.2, random_state=42)
+
+        #     train_dir = os.path.join(self.output_dir, 'train', file)
+        #     val_dir = os.path.join(self.output_dir, 'val', file)
+        #     test_dir = os.path.join(self.output_dir, 'test', file)
+
+        #     if not os.path.exists(train_dir):
+        #         os.mkdir(train_dir)
+        #     if not os.path.exists(val_dir):
+        #         os.mkdir(val_dir)
+        #     if not os.path.exists(test_dir):
+        #         os.mkdir(test_dir)
+
+        #     for video in train:
+        #         self.process_video(video, file, train_dir)
+
+        #     for video in val:
+        #         self.process_video(video, file, val_dir)
+
+        #     for video in test:
+        #         self.process_video(video, file, test_dir)
+
 
     def process_video(self, video, action_name, save_dir):
         # Initialize a VideoCapture object to read video data into a numpy array
