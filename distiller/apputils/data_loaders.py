@@ -166,7 +166,6 @@ class VideoDataset(Dataset):
 
     def preprocess(self):
 
-        
         if not os.path.exists(self.output_dir):
             os.mkdir(self.output_dir)
             os.mkdir(os.path.join(self.output_dir, 'train'))
@@ -209,7 +208,7 @@ class VideoDataset(Dataset):
             file = video_path.split('/')[-2]
             video = video_path.split('/')[-1]
 
-            valid_dir = os.path.join(self.output_dir, 'valid', file)
+            valid_dir = os.path.join(self.output_dir, 'val', file)
             
             if not os.path.exists(valid_dir):
                 os.mkdir(valid_dir)
@@ -217,33 +216,6 @@ class VideoDataset(Dataset):
             self.process_video(video, file, valid_dir)
 
         print('Preprocessing finished.')
-
-        # for file in os.listdir(self.root_dir):
-        #     file_path = os.path.join(self.root_dir, file)
-        #     video_files = [name for name in os.listdir(file_path)]
-
-        #     train_and_valid, test = train_test_split(video_files, test_size=0.2, random_state=42)
-        #     train, val = train_test_split(train_and_valid, test_size=0.2, random_state=42)
-
-        #     train_dir = os.path.join(self.output_dir, 'train', file)
-        #     val_dir = os.path.join(self.output_dir, 'val', file)
-        #     test_dir = os.path.join(self.output_dir, 'test', file)
-
-        #     if not os.path.exists(train_dir):
-        #         os.mkdir(train_dir)
-        #     if not os.path.exists(val_dir):
-        #         os.mkdir(val_dir)
-        #     if not os.path.exists(test_dir):
-        #         os.mkdir(test_dir)
-
-        #     for video in train:
-        #         self.process_video(video, file, train_dir)
-
-        #     for video in val:
-        #         self.process_video(video, file, val_dir)
-
-        #     for video in test:
-        #         self.process_video(video, file, test_dir)
 
 
     def process_video(self, video, action_name, save_dir):
@@ -342,8 +314,6 @@ class VideoDataset(Dataset):
 
 def classification_dataset_str_from_arch(arch):
     
-    # print("arch: ", arch)
-
     if 'cifar' in arch:
         dataset = 'cifar10' 
     elif 'mnist' in arch:
@@ -414,13 +384,13 @@ def load_data(dataset, data_dir, batch_size, workers, validation_split=0.1, dete
         raise ValueError('load_data does not support dataset %s" % dataset')
     
     if(dataset == 'ucf101'):
-        train_data = VideoDataset(dataset='ucf101', split='train', clip_len=16, preprocess=True, data_dir=data_dir)
+        train_data = VideoDataset(dataset='ucf101', split='train', clip_len=16, preprocess=False, data_dir=data_dir)
         train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, num_workers=workers)
 
-        test_data = VideoDataset(dataset='ucf101', split='test', clip_len=16, preprocess=True, data_dir=data_dir)
+        test_data = VideoDataset(dataset='ucf101', split='test', clip_len=16, preprocess=False, data_dir=data_dir)
         test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=True, num_workers=workers)
 
-        val_data = VideoDataset(dataset='ucf101', split='val', clip_len=16, preprocess=True, data_dir=data_dir)
+        val_data = VideoDataset(dataset='ucf101', split='val', clip_len=16, preprocess=False, data_dir=data_dir)
         val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=True, num_workers=workers)
 
         input_shape = __image_size(test_data)
