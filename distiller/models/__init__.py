@@ -147,7 +147,7 @@ class C3D(nn.Module):
         x = self.relu(self.conv5b(x))
         x = self.pool5(x)
 
-        x = x.view(-1, 4096)
+        x = x.view(-1, 8192)
         x = self.relu(self.fc6(x))
         x = self.dropout(x)
         x = self.relu(self.fc7(x))
