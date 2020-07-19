@@ -102,15 +102,15 @@ class C3D(nn.Module):
         self.conv2 = nn.Conv3d(64, 128, kernel_size=(3, 3, 3), padding=(1, 1, 1))
         self.pool2 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2))
 
-        self.conv3 = nn.Conv3d(128, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        self.conv3a = nn.Conv3d(128, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
         self.conv3b = nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
         self.pool3 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2))
 
-        self.conv4 = nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        self.conv4a = nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
         self.conv4b = nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1))
         self.pool4 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2))
 
-        self.conv5 = nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
+        self.conv5a = nn.Conv3d(256, 256, kernel_size=(3, 3, 3), padding=(1, 1, 1))
         self.conv5b = nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1))
         self.pool5 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2), padding=(0, 1, 1))
 
@@ -135,15 +135,15 @@ class C3D(nn.Module):
         x = self.relu(self.conv2(x))
         x = self.pool2(x)
 
-        x = self.relu(self.conv3(x))
+        x = self.relu(self.conv3a(x))
         x = self.relu(self.conv3b(x))
         x = self.pool3(x)
 
-        x = self.relu(self.conv4(x))
+        x = self.relu(self.conv4a(x))
         x = self.relu(self.conv4b(x))
         x = self.pool4(x)
 
-        x = self.relu(self.conv5(x))
+        x = self.relu(self.conv5a(x))
         x = self.relu(self.conv5b(x))
         x = self.pool5(x)
 
