@@ -155,7 +155,9 @@ class C3D(nn.Module):
 
         logits = self.fc8(x)
 
-        return logits
+        probs = nn.Softmax(dim=1)(logits)
+
+        return probs
     def __load_pretrained_weights(self):
         """Initialiaze network."""
         corresp_name = {

@@ -611,8 +611,8 @@ def train(train_loader, model, criterion, optimizer, epoch,
         # Measure data loading time
         # print("Hello my friend")
 
-        print("inputs: ", inputs)
-        print("target: ", target)
+        # print("inputs: ", inputs)
+        # print("target: ", target)
 
 
         data_time.add(time.time() - end)
