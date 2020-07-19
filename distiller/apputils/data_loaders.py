@@ -185,7 +185,7 @@ class VideoDataset(Dataset):
             file = video_path.split('/')[-2]
             video = video_path.split('/')[-1]
 
-            train_dir = os.path.join(self.outpu_dir, 'train', file)
+            train_dir = os.path.join(self.output_dir, 'train', file)
             
             if not os.path.exists(train_dir):
                 os.mkdir(train_dir)
@@ -197,7 +197,7 @@ class VideoDataset(Dataset):
             file = video_path.split('/')[-2]
             video = video_path.split('/')[-1]
 
-            test_dir = os.path.join(self.outpu_dir, 'test', file)
+            test_dir = os.path.join(self.output_dir, 'test', file)
             
             if not os.path.exists(test_dir):
                 os.mkdir(test_dir)
@@ -209,7 +209,7 @@ class VideoDataset(Dataset):
             file = video_path.split('/')[-2]
             video = video_path.split('/')[-1]
 
-            valid_dir = os.path.join(self.outpu_dir, 'valid', file)
+            valid_dir = os.path.join(self.output_dir, 'valid', file)
             
             if not os.path.exists(valid_dir):
                 os.mkdir(valid_dir)
