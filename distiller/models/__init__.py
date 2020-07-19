@@ -199,6 +199,16 @@ class C3D(nn.Module):
             s_dict[corresp_name[name]] = p_dict[name]
         self.load_state_dict(s_dict)
 
+    def __init_weight(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv3d):
+                # n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                # m.weight.data.normal_(0, math.sqrt(2. / n))
+                torch.nn.init.kaiming_normal_(m.weight)
+            elif isinstance(m, nn.BatchNorm3d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+
 def patch_torchvision_mobilenet_v2(model):
     """
     Patches TorchVision's MobileNetV2:
