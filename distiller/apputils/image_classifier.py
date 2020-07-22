@@ -608,28 +608,15 @@ def train(train_loader, model, criterion, optimizer, epoch,
     # print("Hello my friend")
 
     for train_step, (inputs, target) in enumerate(train_loader):
+
         # Measure data loading time
-        # print("Hello my friend")
-
-        # print("inputs: ", inputs)
-        # print("target: ", target)
-
-
         data_time.add(time.time() - end)
-        # print("compression_scheduler: ", args.device)
-        
-        # print("inputs: ", inputs,"target: ", target)
 
         if args.dataset == 'ucf101':
             inputs, target = inputs.to(args.device), target.to(args.device)
         else:
             inputs[0], inputs[1], target = inputs[0].to(args.device), inputs[1].to(args.device), target.to(args.device)
                     
-        # print("target: ", target)
-        # if first_chk:
-        #     print("inputs.size(): ", inputs.size())
-        #     first_chk = False
-
         # Execute the forward phase, compute the output and measure loss
         if compression_scheduler:
             compression_scheduler.on_minibatch_begin(epoch, train_step, steps_per_epoch, optimizer)
@@ -777,7 +764,7 @@ def _validate(data_loader, model, criterion, loggers, args, epoch=-1):
         for validation_step, (inputs, target) in enumerate(data_loader):
             
             if args.dataset == 'ucf101':
-                inputs, target = inputs.to(args.device)/255, target.to(args.device)
+                inputs, target = inputs.to(args.device), target.to(args.device)
             else:
                 inputs[0], inputs[1], target = inputs[0].to(args.device), inputs[1].to(args.device), target.to(args.device)
                 
