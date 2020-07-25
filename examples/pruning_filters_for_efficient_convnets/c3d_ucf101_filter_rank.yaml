@@ -155,12 +155,12 @@ pruners:
   #     module.layer3.8.conv1.weight]
 
 
-# extensions:
-#   net_thinner:
-      # class: 'FilterRemover'
-      # thinning_func_str: remove_filters
-      # arch: 'c3d_ucf101'
-      # dataset: 'ucf101'
+extensions:
+  net_thinner:
+      class: 'FilterRemover'
+      thinning_func_str: remove_filters
+      arch: 'c3d_ucf101'
+      dataset: 'ucf101'
 
 lr_schedulers:
    exp_finetuning_lr:
