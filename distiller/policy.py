@@ -337,7 +337,8 @@ class LRPolicy(ScheduledTrainingPolicy):
             self.lr_scheduler.step(kwargs['metrics'][self.lr_scheduler.mode],
                                    epoch=meta['current_epoch'] + 1)
         else:
-            print("**flag**"*10)
+            print("**flag**"*10, self.lr_scheduler)
+            
             self.lr_scheduler.step(epoch=meta['current_epoch'] + 1)
 
 
