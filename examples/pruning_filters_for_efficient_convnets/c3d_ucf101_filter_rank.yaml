@@ -188,7 +188,7 @@ policies:
 
   - extension:
       instance_name: net_thinner
-    epoc hs: [0]
+    epochs: [0]
 
   - lr_scheduler:
       instance_name: exp_finetuning_lr
