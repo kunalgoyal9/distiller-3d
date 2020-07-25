@@ -166,7 +166,7 @@ lr_schedulers:
    exp_finetuning_lr:
      class: StepLR
      gamma: 0.1
-     step_size: 4
+     step_size: 1
 
 
 policies:
@@ -194,4 +194,4 @@ policies:
       instance_name: exp_finetuning_lr
     starting_epoch: 0
     ending_epoch: 300
-    frequency: 300
+    frequency: 2

@@ -337,7 +337,7 @@ class LRPolicy(ScheduledTrainingPolicy):
             self.lr_scheduler.step(kwargs['metrics'][self.lr_scheduler.mode],
                                    epoch=meta['current_epoch'] + 1)
         elif isinstance(self.lr_scheduler, torch.optim.lr_scheduler.StepLR):
-            print("**flag**"*10, self.lr_scheduler)
+            # print("**flag**"*10, self.lr_scheduler)
             self.lr_scheduler.step()
         else:
             self.lr_scheduler.step(epoch=meta['current_epoch'] + 1)
