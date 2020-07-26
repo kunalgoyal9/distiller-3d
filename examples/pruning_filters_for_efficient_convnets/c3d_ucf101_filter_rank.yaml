@@ -113,10 +113,10 @@
 
 version: 1
 pruners:
-  filter_pruner_30:
+  filter_pruner_20:
     class: 'L1RankedStructureParameterPruner'
     group_type: Filters
-    desired_sparsity: 0.3
+    desired_sparsity: 0.2
     weights: [
       module.conv1.weight,
       # module.features.3.weight,
@@ -171,7 +171,7 @@ lr_schedulers:
 
 policies:
   - pruner:
-      instance_name: filter_pruner_30
+      instance_name: filter_pruner_20
     epochs: [0]
 
   # - pruner:
