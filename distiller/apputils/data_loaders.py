@@ -234,6 +234,8 @@ class VideoDataset(Dataset):
         frame_count = int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
         frame_width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
         frame_height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        
+        print(frame_count)
 
         if frame_count<16:
             return
