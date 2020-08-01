@@ -179,17 +179,17 @@ class VideoDataset(Dataset):
         train_lines = train_d.readlines()
         test_lines = test_d.readlines()
 
-        for line in train_lines:
-            video_path = line.split(" ")[0]
-            file = video_path.split('/')[-2]
-            video = video_path.split('/')[-1]
+        # for line in train_lines:
+        #     video_path = line.split(" ")[0]
+        #     file = video_path.split('/')[-2]
+        #     video = video_path.split('/')[-1]
 
-            train_dir = os.path.join(self.output_dir, 'train', file)
+        #     train_dir = os.path.join(self.output_dir, 'train', file)
             
-            if not os.path.exists(train_dir):
-                os.mkdir(train_dir)
+        #     if not os.path.exists(train_dir):
+        #         os.mkdir(train_dir)
             
-            self.process_video(video, file, train_dir)
+        #     self.process_video(video, file, train_dir)
 
         for line in test_lines:
             # video_path = line.split(" ")[0]
