@@ -192,7 +192,8 @@ class VideoDataset(Dataset):
         #     self.process_video(video, file, train_dir)
 
         for line in test_lines:
-            # video_path = line.split(" ")[0]
+            # video_path = line.split("")[0]
+            video_path = line
             file = video_path.split('/')[-2]
             video = video_path.split('/')[-1]
             
