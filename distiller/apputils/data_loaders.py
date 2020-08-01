@@ -179,27 +179,23 @@ class VideoDataset(Dataset):
         train_lines = train_d.readlines()
         test_lines = test_d.readlines()
 
-        # for line in train_lines:
-        #     video_path = line.split(" ")[0]
-        #     file = video_path.split('/')[-2]
-        #     video = video_path.split('/')[-1]
+        for line in train_lines:
+            video_path = line.split(" ")[0]
+            file = video_path.split('/')[-2]
+            video = video_path.split('/')[-1]
 
-        #     train_dir = os.path.join(self.output_dir, 'train', file)
+            train_dir = os.path.join(self.output_dir, 'train', file)
             
-        #     if not os.path.exists(train_dir):
-        #         os.mkdir(train_dir)
+            if not os.path.exists(train_dir):
+                os.mkdir(train_dir)
             
-        #     self.process_video(video, file, train_dir)
+            self.process_video(video, file, train_dir)
 
         for line in test_lines:
             video_path = line.split("\n")[0]
-            # video_path = line
             file = video_path.split('/')[-2]
             video = video_path.split('/')[-1]
             
-            # print("file: ", file)
-            # print("video: ", video)
-
             test_dir = os.path.join(self.output_dir, 'test', file)
             
             if not os.path.exists(test_dir):
@@ -229,14 +225,11 @@ class VideoDataset(Dataset):
 
         capture = cv2.VideoCapture(os.path.join(self.root_dir, action_name, video))
         
-        print("path for test video: ",os.path.join(self.root_dir, action_name, video))
 
         frame_count = int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
         frame_width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
         frame_height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
         
-        print(frame_count)
-
         if frame_count<16:
             return
         
