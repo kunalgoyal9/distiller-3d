@@ -388,7 +388,7 @@ def load_data(dataset, data_dir, batch_size, workers, validation_split=0.1, dete
         train_data = VideoDataset(dataset='ucf101', split='train', clip_len=16, preprocess=False, data_dir=data_dir)
         train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, num_workers=workers)
 
-        test_data = VideoDataset(dataset='ucf101', split='test', clip_len=16, preprocess=True, data_dir=data_dir)
+        test_data = VideoDataset(dataset='ucf101', split='test', clip_len=16, preprocess=False, data_dir=data_dir)
         test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=True, num_workers=workers)
 
         val_data = VideoDataset(dataset='ucf101', split='val', clip_len=16, preprocess=False, data_dir=data_dir)
