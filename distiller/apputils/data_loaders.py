@@ -197,8 +197,8 @@ class VideoDataset(Dataset):
             file = video_path.split('/')[-2]
             video = video_path.split('/')[-1]
             
-            print("file: ", file)
-            print("video: ", video)
+            # print("file: ", file)
+            # print("video: ", video)
 
             test_dir = os.path.join(self.output_dir, 'test', file)
             
@@ -228,6 +228,8 @@ class VideoDataset(Dataset):
         
 
         capture = cv2.VideoCapture(os.path.join(self.root_dir, action_name, video))
+        
+        print("path for test video: ",os.path.join(self.root_dir, action_name, video))
 
         frame_count = int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
         frame_width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
