@@ -656,9 +656,6 @@ def train(train_loader, model, criterion, optimizer, epoch,
             losses[OVERALL_LOSS_KEY].add(loss.item())
 
         # Compute the gradient and do SGD step
-        
-        print("optimizer: ", optimizer)
-
         optimizer.zero_grad()
         loss.backward()
         if compression_scheduler:
