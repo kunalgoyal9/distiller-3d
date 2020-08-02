@@ -93,7 +93,7 @@ class C3D(nn.Module):
     The C3D network.
     """
 
-    def __init__(self, num_classes, pretrained=False):
+    def __init__(self, num_classes, pretrained=True):
         super(C3D, self).__init__()
 
         self.conv1 = nn.Conv3d(3, 64, kernel_size=(3, 3, 3), padding=(1, 1, 1))
