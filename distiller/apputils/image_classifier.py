@@ -612,6 +612,8 @@ def train(train_loader, model, criterion, optimizer, epoch,
         # Measure data loading time
         data_time.add(time.time() - end)
 
+        print(inputs)
+
         if args.dataset == 'ucf101':
             inputs, target = inputs.to(args.device), target.to(args.device)
         else:
