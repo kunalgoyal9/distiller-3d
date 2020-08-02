@@ -192,6 +192,6 @@ policies:
 
   - lr_scheduler:
       instance_name: exp_finetuning_lr
-    starting_epoch: 0
+    starting_epoch: 30
     ending_epoch: 300
     frequency: 30
