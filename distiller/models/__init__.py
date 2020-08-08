@@ -155,8 +155,8 @@ class C3D(nn.Module):
 
         logits = self.fc8(x)
         
-        # print("*"*10, " output ", "*"*10)
-        # print(logits[0])
+        print("*"*10, " output for fc ", "*"*10)
+        print(logits[0])
 
         probs = nn.Softmax(dim=1)(logits)
         return probs
