@@ -658,6 +658,9 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
         # Compute the gradient and do SGD step
         optimizer.zero_grad()
+
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 1)
+        
         loss.backward()
         if compression_scheduler:
             compression_scheduler.before_parameter_optimization(epoch, train_step, steps_per_epoch, optimizer)
