@@ -155,11 +155,10 @@ class C3D(nn.Module):
 
         logits = self.fc8(x)
         
-        print("*"*10, " output ", "*"*10)
-        print(logits)
+        # print("*"*10, " output ", "*"*10)
+        # print(logits)
 
         probs = nn.Softmax(dim=1)(logits)
-        print
         return probs
     def __load_pretrained_weights(self):
         """Initialiaze network."""
