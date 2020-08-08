@@ -660,7 +660,7 @@ def train(train_loader, model, criterion, optimizer, epoch,
         optimizer.zero_grad()
 
         # addon 1
-        torch.nn.utils.clip_grad_norm_(model.parameters(), 1)
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 0.5)
         
         loss.backward()
 
