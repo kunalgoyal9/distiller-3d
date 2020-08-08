@@ -666,7 +666,7 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
         # addon 2
 
-        print("gradient for fc: ", model.fc8.weight.grad)
+        print("gradient for fc: ", model.parameters().fc8.weight.grad)
 
         if compression_scheduler:
             compression_scheduler.before_parameter_optimization(epoch, train_step, steps_per_epoch, optimizer)
