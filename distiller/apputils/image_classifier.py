@@ -614,7 +614,7 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
         if args.dataset == 'ucf101':
             inputs, target = inputs.to(args.device)/255, target.to(args.device)
-            # print(inputs)
+            print(inputs)
         else:
             inputs[0], inputs[1], target = inputs[0].to(args.device), inputs[1].to(args.device), target.to(args.device)
                     
