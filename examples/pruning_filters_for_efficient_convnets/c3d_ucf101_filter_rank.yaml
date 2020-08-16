@@ -174,9 +174,9 @@ lr_schedulers:
 
 
 policies:
-  # - pruner:
-  #     instance_name: filter_pruner_40
-  #   epochs: [0]
+  - pruner:
+      instance_name: filter_pruner_40
+    epochs: [0]
 
   # - pruner:
   #     instance_name: filter_pruner_50
@@ -190,9 +190,9 @@ policies:
   #     instance_name: filter_pruner_10
   #   epochs: [0]
 
-  # - extension:
-  #     instance_name: net_thinner
-  #   epochs: [0]
+  - extension:
+      instance_name: net_thinner
+    epochs: [0]
 
   - lr_scheduler:
       instance_name: exp_finetuning_lr
