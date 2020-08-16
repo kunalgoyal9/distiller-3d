@@ -116,12 +116,16 @@ pruners:
   filter_pruner_40:
     class: 'L1RankedStructureParameterPruner'
     group_type: Filters
-    desired_sparsity: 0.4
+    desired_sparsity: 0.3
     weights: [
       module.conv1.weight,
-      # module.features.3.weight,
-      # module.features.6.weight,
-      # module.features.8.weight,
+      module.conv2.weight,
+      module.conv3a.weight,
+      module.conv3b.weight,
+      module.conv4a.weight,
+      module.conv4b.weight,
+      module.conv5a.weight,
+      module.conv5b.weight,
       ]
 
   # filter_pruner_50:
