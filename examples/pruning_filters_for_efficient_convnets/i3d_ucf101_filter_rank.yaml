@@ -112,7 +112,7 @@
 # sys     7m16.697s
 
 version: 1
-pruners:
+# pruners:
   # filter_pruner_70:
   #   class: 'L1RankedStructureParameterPruner'
   #   group_type: Filters
