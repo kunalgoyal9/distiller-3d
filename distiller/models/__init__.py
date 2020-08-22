@@ -341,6 +341,8 @@ def _create_i3d_ucf101_model(arch, pretrained):
 
         for param in model.head.parameters():
             param.requires_grad = True
+    
+    return model
 
 def _create_slowfast_ucf101_model(arch, pretrained):
     dataset = "slowfast_ucf101"
