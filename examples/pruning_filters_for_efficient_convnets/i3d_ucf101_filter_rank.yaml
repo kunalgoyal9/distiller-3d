@@ -113,21 +113,21 @@
 
 version: 1
 pruners:
-  filter_pruner_70:
-    class: 'L1RankedStructureParameterPruner'
-    group_type: Filters
-    desired_sparsity: 0.7
-    weights: [
+  # filter_pruner_70:
+  #   class: 'L1RankedStructureParameterPruner'
+  #   group_type: Filters
+  #   desired_sparsity: 0.7
+  #   weights: [
       
-      ]
+  #     ]
 
-  filter_pruner_60:
-    class: 'L1RankedStructureParameterPruner'
-    group_type: Filters
-    desired_sparsity: 0.6
-    weights: [
+  # filter_pruner_60:
+  #   class: 'L1RankedStructureParameterPruner'
+  #   group_type: Filters
+  #   desired_sparsity: 0.6
+  #   weights: [
       
-      ]
+  #     ]
 
   # filter_pruner_10:
   #   class: 'L1RankedStructureParameterPruner'
@@ -135,38 +135,38 @@ pruners:
   #   desired_sparsity: 0.1
   #   weights: [module.layer3.1.conv1.weight]
 
-  filter_pruner_40:
-    class: 'L1RankedStructureParameterPruner'
-    group_type: Filters
-    desired_sparsity: 0.4
-    weights: [
+  # filter_pruner_40:
+  #   class: 'L1RankedStructureParameterPruner'
+  #   group_type: Filters
+  #   desired_sparsity: 0.4
+  #   weights: [
       
-      module.s5.pathway1_res2.branch2.b.weight
-      ]
+  #     module.s5.pathway1_res2.branch2.b.weight
+  #     ]
   
-  filter_pruner_40_experiments:
-    class: 'L1RankedStructureParameterPruner'
-    group_type: Filters
-    desired_sparsity: 0.4
-    # group_dependency: Leader
-    weights: [
-      # module.s2.pathway0_res2.branch2.c.weight,
-      # module.s2.pathway0_res1.branch
-      ]
+  # filter_pruner_40_experiments:
+  #   class: 'L1RankedStructureParameterPruner'
+  #   group_type: Filters
+  #   desired_sparsity: 0.4
+  #   # group_dependency: Leader
+  #   weights: [
+  #     # module.s2.pathway0_res2.branch2.c.weight,
+  #     # module.s2.pathway0_res1.branch
+  #     ]
 
-quantizers:
-  dorefa_quantizer:
-    class: DorefaQuantizer
-    bits_activations: 8
-    bits_weights: 8
+# quantizers:
+#   dorefa_quantizer:
+#     class: DorefaQuantizer
+#     bits_activations: 8
+#     bits_weights: 8
 
 
-extensions:
-  net_thinner:
-      class: 'FilterRemover'
-      thinning_func_str: remove_filters
-      arch: 'i3d_ucf101'
-      dataset: 'i3d_ucf101'
+# extensions:
+#   net_thinner:
+#       class: 'FilterRemover'
+#       thinning_func_str: remove_filters
+#       arch: 'i3d_ucf101'
+#       dataset: 'i3d_ucf101'
 
 lr_schedulers:
    exp_finetuning_lr:
