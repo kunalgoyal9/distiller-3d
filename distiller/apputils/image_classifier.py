@@ -400,6 +400,7 @@ def _config_compute_device(args):
 
 def _init_learner(args):
     # Create the model
+    print("dataset2: ", args.dataset)
     model = create_model(args.pretrained, args.dataset, args.arch,
                          parallel=not args.load_serialized, device_ids=args.gpus)
     # print("_init_learner called: ")
