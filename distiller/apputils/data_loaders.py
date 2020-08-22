@@ -44,7 +44,7 @@ cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8
 cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
 
 
-DATASETS_NAMES = ['imagenet', 'cifar10', 'mnist', 'ucf101', 'slowfast_ucf101']
+DATASETS_NAMES = ['imagenet', 'cifar10', 'mnist', 'ucf101', 'slowfast_ucf101', 'i3d_ucf101']
 
 
 class VideoDataset(Dataset):
@@ -75,8 +75,6 @@ class VideoDataset(Dataset):
         if not self.check_integrity():
             raise RuntimeError('Dataset not found or corrupted.' +
                                ' You need to download it from official website.')
-
-        # print("*****", self.check_preprocess())
 
         if (not self.check_preprocess()) or preprocess:
             print("preprocess called ")
@@ -131,8 +129,6 @@ class VideoDataset(Dataset):
 
     def check_integrity(self):
         
-        print("path: ", self.root_dir)
-
         if not os.path.exists(self.root_dir):
             return False
         else:
@@ -140,8 +136,6 @@ class VideoDataset(Dataset):
 
     def check_preprocess(self):
         
-        print("self.output: ", self.output_dir)
-
         # TODO: Check image size in output_dir
         if not os.path.exists(self.output_dir):
             return False
@@ -154,7 +148,6 @@ class VideoDataset(Dataset):
                                     sorted(os.listdir(os.path.join(self.output_dir, 'train', video_class, video)))[0])
                 image = cv2.imread(video_name)
                 if np.shape(image)[0] != 128 or np.shape(image)[1] != 171:
-                    print("&"*100)
                     return False
                 else:
                     break
@@ -217,14 +210,11 @@ class VideoDataset(Dataset):
 
         print('Preprocessing finished.')
 
-
     def process_video(self, video, action_name, save_dir):
         # Initialize a VideoCapture object to read video data into a numpy array
         video_filename = video.split('.')[0]
         
-
         capture = cv2.VideoCapture(os.path.join(self.root_dir, action_name, video))
-        
 
         frame_count = int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
         frame_width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -274,7 +264,6 @@ class VideoDataset(Dataset):
 
         return buffer
 
-
     def normalize(self, buffer):
         for i, frame in enumerate(buffer):
             frame -= np.array([[[90.0, 98.0, 102.0]]])
@@ -321,13 +310,13 @@ def classification_dataset_str_from_arch(arch):
         dataset = 'mnist' 
     elif 'slowfast_ucf101' in arch:
         dataset = 'slowfast_ucf101'
+    elif 'i3d_ucf101' in arch:
+        dataset = 'i3d_ucf101'
     elif 'ucf101' in arch:
         dataset = 'ucf101'
     else:
         dataset = 'imagenet'
     
-    # print("dataset: ", dataset)
-
     return dataset
 
 
@@ -336,7 +325,8 @@ def classification_num_classes(dataset):
             'mnist': 10,
             'imagenet': 1000,
             'ucf101': 101,
-            'slowfast_ucf101': 101}.get(dataset, None)
+            'slowfast_ucf101': 101,
+            'i3d_ucf101': 101 }.get(dataset, None)
 
 
 def classification_get_input_shape(dataset):
@@ -347,7 +337,7 @@ def classification_get_input_shape(dataset):
         return 1, 3, 32, 32
     elif dataset == 'mnist':
         return 1, 1, 28, 28
-    elif dataset == 'ucf101':
+    elif dataset == 'ucf101' or dataset == 'i3d_ucf101':
         return 1, 3, 16, 112, 112
     elif dataset == 'slowfast_ucf101':
         return (1, 3, 16, 224, 224), (1, 3, 64, 224, 224)
@@ -397,14 +387,14 @@ def load_data(dataset, data_dir, batch_size, workers, validation_split=0.1, dete
         input_shape = __image_size(test_data)
 
         return train_loader, val_loader, test_loader, input_shape
-    elif dataset == 'slowfast_ucf101':
+    elif dataset in ('slowfast_ucf101', 'i3d_ucf101'):
 
         train_loader, dataset_class = loader.construct_loader(cfg, "train")
         val_loader, dataset_class = loader.construct_loader(cfg, "val")
 
         input_shape = __image_size(dataset_class, dataset)
 
-        return train_loader, val_loader,  val_loader, input_shape
+        return train_loader, val_loader, val_loader, input_shape
         
     else:
         datasets_fn = __dataset_factory(dataset)
