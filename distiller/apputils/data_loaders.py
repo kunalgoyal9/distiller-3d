@@ -38,11 +38,6 @@ from slowfast.utils.parser import load_config, parse_args
 from slowfast.config.defaults import get_cfg
 
 cfg = get_cfg()
-cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8_R50-UCF101.yaml")
-# cfg.NUM_GPUS = 1
-# cfg.TRAIN.BATCH_SIZE = 2
-cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
-
 
 DATASETS_NAMES = ['imagenet', 'cifar10', 'mnist', 'ucf101', 'slowfast_ucf101', 'i3d_ucf101']
 
@@ -371,6 +366,9 @@ def load_data(dataset, data_dir, batch_size, workers, validation_split=0.1, dete
           (the size of the subset is still determined according to the effective_train/valid/test
           size args)
     """
+
+    global cfg
+
     if dataset not in DATASETS_NAMES:
         raise ValueError('load_data does not support dataset %s" % dataset')
     
@@ -388,6 +386,14 @@ def load_data(dataset, data_dir, batch_size, workers, validation_split=0.1, dete
 
         return train_loader, val_loader, test_loader, input_shape
     elif dataset in ('slowfast_ucf101', 'i3d_ucf101'):
+        
+        if dataset == 'slowfast_ucf101':
+            cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8_R50-UCF101.yaml")
+            cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
+        elif dataset == 'i3d_ucf101':
+            cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/I3D_8x8_R50-UCF101.yaml")
+            cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
+
 
         train_loader, dataset_class = loader.construct_loader(cfg, "train")
         val_loader, dataset_class = loader.construct_loader(cfg, "val")
@@ -513,7 +519,7 @@ def imagenet_get_datasets(data_dir, load_train=True, load_test=True):
 def __image_size(dataset, name="abc"):
     # un-squeeze is used here to add the batch dimension (value=1), which is missing
     
-    if name in ('slowfast_ucf101', 'i3d_ucf101'):
+    if name in ('slowfast_ucf101'):
         return dataset[0][0][0].unsqueeze(0).size() 
     else:
         return dataset[0][0].unsqueeze(0).size()
