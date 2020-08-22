@@ -387,6 +387,8 @@ def load_data(dataset, data_dir, batch_size, workers, validation_split=0.1, dete
         return train_loader, val_loader, test_loader, input_shape
     elif dataset in ('slowfast_ucf101', 'i3d_ucf101'):
         
+        print("data loader dataset: ", dataset)
+        
         if dataset == 'slowfast_ucf101':
             cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8_R50-UCF101.yaml")
             cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
@@ -519,7 +521,7 @@ def imagenet_get_datasets(data_dir, load_train=True, load_test=True):
 def __image_size(dataset, name="abc"):
     # un-squeeze is used here to add the batch dimension (value=1), which is missing
     
-    if name in ('slowfast_ucf101'):
+    if name in ('slowfast_ucf101', 'i3d_ucf101'):
         return dataset[0][0][0].unsqueeze(0).size() 
     else:
         return dataset[0][0].unsqueeze(0).size()
