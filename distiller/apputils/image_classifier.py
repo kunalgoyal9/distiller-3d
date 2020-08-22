@@ -55,14 +55,14 @@ class ClassifierCompressor(object):
     """
     def __init__(self, args, script_dir):
 
-        # print("args: ",args.dataset)
+        print("args: ",args.dataset)
 
         self.args = copy.deepcopy(args)
 
 
         self._infer_implicit_args(self.args)
 
-        # print("__init__ self.args.dataset: ",self.args.dataset)
+        print("__init__ self.args.dataset: ",self.args.dataset)
 
         self.logdir = _init_logger(self.args, script_dir)
         _config_determinism(self.args)

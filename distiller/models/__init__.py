@@ -270,9 +270,6 @@ def create_model(pretrained, dataset, arch, parallel=True, device_ids=None):
 
     model = None
     cadene = False
-    
-    print("dataset: ", dataset)
-
     try:
         if dataset == 'imagenet':
             model, cadene = _create_imagenet_model(arch, pretrained)
