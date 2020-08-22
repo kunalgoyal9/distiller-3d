@@ -614,7 +614,7 @@ def train(train_loader, model, criterion, optimizer, epoch,
         if args.dataset == 'slowfast_ucf101':
             inputs[0], inputs[1], target = inputs[0].to(args.device), inputs[1].to(args.device), target.to(args.device)
         elif args.dataset == 'i3d_ucf101':
-            inputs, target = inputs[0].to(args.device), target[0].to(args.device)
+            inputs[0], target[0] = inputs[0].to(args.device), target[0].to(args.device)
         else:
             inputs, target = inputs.to(args.device), target.to(args.device)            
         
