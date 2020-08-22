@@ -85,8 +85,6 @@ class ClassifierCompressor(object):
             self.model, *self.args.activation_stats)
         self.performance_tracker = apputils.SparsityAccuracyTracker(self.args.num_best_scores)
 
-        print("__init__ self.args.dataset: ",self.args.dataset)
-
     def load_datasets(self):
 
         """Load the datasets"""
@@ -613,12 +611,11 @@ def train(train_loader, model, criterion, optimizer, epoch,
         # Measure data loading time
         data_time.add(time.time() - end)
 
-        if args.dataset == 'ucf101':
-            inputs, target = inputs.to(args.device), target.to(args.device)
-            # print(inputs)
-        else:
+        if args.dataset == 'slowfast_ucf101':
             inputs[0], inputs[1], target = inputs[0].to(args.device), inputs[1].to(args.device), target.to(args.device)
-                    
+        else:
+            inputs, target = inputs.to(args.device), target.to(args.device)            
+        
         # Execute the forward phase, compute the output and measure loss
         if compression_scheduler:
             compression_scheduler.on_minibatch_begin(epoch, train_step, steps_per_epoch, optimizer)
