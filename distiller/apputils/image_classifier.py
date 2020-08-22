@@ -611,7 +611,9 @@ def train(train_loader, model, criterion, optimizer, epoch,
         # Measure data loading time
         data_time.add(time.time() - end)
         
-        print(inputs)
+        print(len(inputs))
+        print(inputs[0].shape)
+        print(inputs[1].shape)
 
         if args.dataset == 'slowfast_ucf101':
             inputs[0], inputs[1], target = inputs[0].to(args.device), inputs[1].to(args.device), target.to(args.device)
