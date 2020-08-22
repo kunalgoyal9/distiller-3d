@@ -512,7 +512,7 @@ def imagenet_get_datasets(data_dir, load_train=True, load_test=True):
 
 def __image_size(dataset, name="abc"):
     # un-squeeze is used here to add the batch dimension (value=1), which is missing
-    print(dataset)
+    print(dataset[0][0][0])
     if name == 'slowfast_ucf101':
         return dataset[0][0][0].unsqueeze(0).size() 
     else:
