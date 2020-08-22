@@ -773,10 +773,12 @@ def _validate(data_loader, model, criterion, loggers, args, epoch=-1):
     with torch.no_grad():
         for validation_step, (inputs, target) in enumerate(data_loader):
             
-            if args.dataset == 'ucf101':
-                inputs, target = inputs.to(args.device), target.to(args.device)
-            else:
+            if args.dataset == 'slowfast_ucf101':
                 inputs[0], inputs[1], target = inputs[0].to(args.device), inputs[1].to(args.device), target.to(args.device)
+            elif args.dataset == 'i3d_ucf101':
+                inputs[0], target = inputs[0].to(args.device), target.to(args.device)
+            else:
+                inputs, target = inputs.to(args.device), target.to(args.device) 
                 
             # compute output from model
             output = model(inputs)
