@@ -79,6 +79,7 @@ ALL_MODEL_NAMES = sorted(map(lambda s: s.lower(),
 
 ALL_MODEL_NAMES.append("c3d_ucf101")
 ALL_MODEL_NAMES.append("slowfast_ucf101")
+ALL_MODEL_NAMES.append("i3d_ucf101")
 
 # print("ALL: ", ALL_MODEL_NAMES)
 
