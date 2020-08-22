@@ -249,6 +249,7 @@ _model_extensions = {}
 
 
 def create_model(pretrained, dataset, arch, parallel=True, device_ids=None):
+    global cfg
     """Create a pytorch model based on the model architecture and dataset
 
     Args:
@@ -279,14 +280,13 @@ def create_model(pretrained, dataset, arch, parallel=True, device_ids=None):
             model = _create_ucf101_model(arch, pretrained)
         elif dataset == 'slowfast_ucf101':
             
-            global cfg
+            
             cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8_R50-UCF101.yaml")
             cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
             
             model = _create_slowfast_ucf101_model(arch, pretrained)
         elif dataset == 'i3d_ucf101':
-            
-            global cfg
+
             cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/I3D_8x8_R50-UCF101.yaml")
             cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
             
@@ -329,6 +329,8 @@ def _create_ucf101_model(arch, pretrained):
 def _create_i3d_ucf101_model(arch, pretrained):
     dataset = "i3d_ucf101"
 
+    global cfg
+
     if "i3d" in arch:
         model = build_model(cfg)
         cu.load_checkpoint(cfg.TRAIN.CHECKPOINT_FILE_PATH, model, False, None, False, convert_from_caffe2=True)
@@ -341,6 +343,8 @@ def _create_i3d_ucf101_model(arch, pretrained):
 
 def _create_slowfast_ucf101_model(arch, pretrained):
     dataset = "slowfast_ucf101"
+    
+    global cfg
     
     # print("slowfast ucf101 model called: ")
 
