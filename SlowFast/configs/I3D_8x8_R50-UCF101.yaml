@@ -4,7 +4,7 @@ TRAIN:
   BATCH_SIZE: 64
   EVAL_PERIOD: 10
   CHECKPOINT_PERIOD: 1
-  CHECKPOINT_FILE_PATH: '/workspace/Kugos/slowflast/SLOWFAST_4x16_R50.pkl'
+  CHECKPOINT_FILE_PATH: '/workspace/Kugos/slowflast/I3D_8x8_R50.pkl'
   AUTO_RESUME: True
   CHECKPOINT_TYPE: caffe2
 DATA:

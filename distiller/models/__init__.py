@@ -281,7 +281,6 @@ def create_model(pretrained, dataset, arch, parallel=True, device_ids=None):
             model = _create_ucf101_model(arch, pretrained)
         elif dataset == 'slowfast_ucf101':
             
-            
             cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8_R50-UCF101.yaml")
             cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
             
