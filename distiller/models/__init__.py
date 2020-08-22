@@ -45,14 +45,10 @@ from slowfast.models import build_model
 import slowfast.utils.checkpoint as cu
 
 cfg = get_cfg()
-cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8_R50-UCF101.yaml")
-# cfg.NUM_GPUS = 1
-# cfg.TRAIN.BATCH_SIZE = 2
-cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
 
 msglogger = logging.getLogger()
 
-SUPPORTED_DATASETS = ('imagenet', 'cifar10', 'mnist', 'ucf101', 'slowfast_ucf101')
+SUPPORTED_DATASETS = ('imagenet', 'cifar10', 'mnist', 'ucf101', 'slowfast_ucf101', 'i3d_ucf101')
 
 # ResNet special treatment: we have our own version of ResNet, so we need to over-ride
 # TorchVision's version.
@@ -282,7 +278,20 @@ def create_model(pretrained, dataset, arch, parallel=True, device_ids=None):
         elif dataset == 'ucf101':
             model = _create_ucf101_model(arch, pretrained)
         elif dataset == 'slowfast_ucf101':
+            
+            global cfg
+            cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8_R50-UCF101.yaml")
+            cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
+            
             model = _create_slowfast_ucf101_model(arch, pretrained)
+        elif dataset == 'i3d_ucf101':
+            
+            global cfg
+            cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/I3D_8x8_R50-UCF101.yaml")
+            cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
+            
+            model = _create_i3d_ucf101_model(arch, pretrained)
+
     except ValueError:
         if _is_registered_extension(arch, dataset, pretrained):
             model = _create_extension_model(arch, dataset)
@@ -316,6 +325,19 @@ def _create_ucf101_model(arch, pretrained):
         model = C3D(101)
 
     return model
+
+def _create_i3d_ucf101_model(arch, pretrained):
+    dataset = "i3d_ucf101"
+
+    if "i3d" in arch:
+        model = build_model(cfg)
+        cu.load_checkpoint(cfg.TRAIN.CHECKPOINT_FILE_PATH, model, False, None, False, convert_from_caffe2=True)
+        
+        for param in model.parameters():
+            param.requires_grad = False
+
+        for param in model.head.parameters():
+            param.requires_grad = True
 
 def _create_slowfast_ucf101_model(arch, pretrained):
     dataset = "slowfast_ucf101"
@@ -368,7 +390,6 @@ def _create_imagenet_model(arch, pretrained):
         raise ValueError(error_message or 'Failed to find model {}'.format(arch))
     return model, cadene
 
-
 def _create_cifar10_model(arch, pretrained):
     if pretrained:
         raise ValueError("Model {} (CIFAR10) does not have a pretrained model".format(arch))
@@ -378,7 +399,6 @@ def _create_cifar10_model(arch, pretrained):
         raise ValueError("Model {} is not supported for dataset CIFAR10".format(arch))
     return model
 
-
 def _create_mnist_model(arch, pretrained):
     if pretrained:
         raise ValueError("Model {} (MNIST) does not have a pretrained model".format(arch))
@@ -387,7 +407,6 @@ def _create_mnist_model(arch, pretrained):
     except KeyError:
         raise ValueError("Model {} is not supported for dataset MNIST".format(arch))
     return model
-
 
 def _set_model_input_shape_attr(model, arch, dataset, pretrained, cadene):
     if cadene and pretrained:
