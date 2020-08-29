@@ -389,10 +389,10 @@ def load_data(dataset, data_dir, batch_size, workers, validation_split=0.1, dete
         
         if dataset == 'slowfast_ucf101':
             cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/SLOWFAST_8x8_R50-UCF101.yaml")
-            cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
+            # cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/ucf_splits/official"
         elif dataset == 'i3d_ucf101':
             cfg.merge_from_file("/workspace/Kugos/distiller-3d/SlowFast/configs/I3D_8x8_R50-UCF101.yaml")
-            cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/"
+            # cfg.DATA.PATH_TO_DATA_DIR = "/workspace/Data/ucf_splits/official"
 
 
         train_loader, dataset_class = loader.construct_loader(cfg, "train")
