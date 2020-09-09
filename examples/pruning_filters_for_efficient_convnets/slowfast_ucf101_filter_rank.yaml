@@ -246,9 +246,9 @@ policies:
       instance_name: filter_pruner_40
     epochs: [0]
 
-  - pruner:
-      instance_name: filter_pruner_40_experiments
-    epochs: [0]
+  # - pruner:
+  #     instance_name: filter_pruner_40_experiments
+  #   epochs: [0]
 
   - extension:
       instance_name: net_thinner
