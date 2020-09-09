@@ -234,25 +234,25 @@ lr_schedulers:
 
 
 policies:
-  # - pruner:
-  #     instance_name: filter_pruner_70
-  #   epochs: [0]
+  - pruner:
+      instance_name: filter_pruner_70
+    epochs: [0]
 
-  # - pruner:
-  #     instance_name: filter_pruner_60
-  #   epochs: [0]
+  - pruner:
+      instance_name: filter_pruner_60
+    epochs: [0]
 
-  # - pruner:
-  #     instance_name: filter_pruner_40
-  #   epochs: [0]
+  - pruner:
+      instance_name: filter_pruner_40
+    epochs: [0]
 
-  # - pruner:
-  #     instance_name: filter_pruner_40_experiments
-  #   epochs: [0]
+  - pruner:
+      instance_name: filter_pruner_40_experiments
+    epochs: [0]
 
-  # - extension:
-  #     instance_name: net_thinner
-  #   epochs: [0]
+  - extension:
+      instance_name: net_thinner
+    epochs: [0]
 
   # - quantizer:
   #     instance_name: dorefa_quantizer
