@@ -250,9 +250,9 @@ policies:
       instance_name: filter_pruner_40_experiments
     epochs: [0]
 
-  # - extension:
-  #     instance_name: net_thinner
-  #   epochs: [0]
+  - extension:
+      instance_name: net_thinner
+    epochs: [0]
 
   # - quantizer:
   #     instance_name: dorefa_quantizer
