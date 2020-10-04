@@ -158,6 +158,28 @@ pruners:
       module.s3.pathway1_res2.branch2.b.weight
       ]
 
+  filter_pruner_80:
+    class: 'L1RankedStructureParameterPruner'
+    group_type: Filters
+    desired_sparsity: 0.8
+    weights: [
+      module.s3.pathway0_res0.branch2.a.weight,
+      # module.s3.pathway0_res1.branch2.a.weight,
+      # module.s3.pathway0_res2.branch2.a.weight,      
+
+      # module.s3.pathway1_res0.branch2.a.weight,
+      # module.s3.pathway1_res1.branch2.a.weight,
+      # module.s3.pathway1_res2.branch2.a.weight,
+
+      # module.s3.pathway0_res0.branch2.b.weight,
+      # module.s3.pathway0_res1.branch2.b.weight,
+      # module.s3.pathway0_res2.branch2.b.weight,      
+
+      # module.s3.pathway1_res0.branch2.b.weight,
+      # module.s3.pathway1_res1.branch2.b.weight,
+      # module.s3.pathway1_res2.branch2.b.weight
+      ]
+
   # filter_pruner_10:
   #   class: 'L1RankedStructureParameterPruner'
   #   group_type: Filters
@@ -234,6 +256,10 @@ lr_schedulers:
 
 
 policies:
+  - pruner:
+      instance_name: filter_pruner_80
+    epochs: [0]
+
   # - pruner:
   #     instance_name: filter_pruner_70
   #   epochs: [0]
@@ -246,9 +272,9 @@ policies:
   #     instance_name: filter_pruner_40
   #   epochs: [0]
 
-  - pruner:
-      instance_name: filter_pruner_40_experiments
-    epochs: [0]
+  # - pruner:
+  #     instance_name: filter_pruner_40_experiments
+  #   epochs: [0]
 
   - extension:
       instance_name: net_thinner
