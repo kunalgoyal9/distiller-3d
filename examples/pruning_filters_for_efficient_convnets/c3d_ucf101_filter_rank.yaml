@@ -175,7 +175,7 @@ lr_schedulers:
 
 policies:
   - pruner:
-      instance_name: filter_pruner_40
+      instance_name: filter_pruner_60
     epochs: [0]
 
   # - pruner:
