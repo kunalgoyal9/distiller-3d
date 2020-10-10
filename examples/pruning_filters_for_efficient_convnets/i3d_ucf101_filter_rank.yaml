@@ -234,12 +234,12 @@ pruners:
 #     bits_weights: 8
 
 
-# extensions:
-#   net_thinner:
-#       class: 'FilterRemover'
-#       thinning_func_str: remove_filters
-#       arch: 'i3d_ucf101'
-#       dataset: 'i3d_ucf101'
+extensions:
+  net_thinner:
+      class: 'FilterRemover'
+      thinning_func_str: remove_filters
+      arch: 'i3d_ucf101'
+      dataset: 'i3d_ucf101'
 
 lr_schedulers:
    exp_finetuning_lr:
