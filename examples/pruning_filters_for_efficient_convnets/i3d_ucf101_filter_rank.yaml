@@ -118,7 +118,7 @@ pruners:
     group_type: Filters
     desired_sparsity: 0.4
     weights: [
-      module.s1.pathway0_stem.conv.weight,
+      # module.s1.pathway0_stem.conv.weight,
   
       # module.s2.pathway0_res0.branch1.weight,
       
@@ -265,9 +265,9 @@ policies:
   #     instance_name: filter_pruner_40_experiments
   #   epochs: [0]
 
-  # - extension:
-  #     instance_name: net_thinner
-  #   epochs: [0]
+  - extension:
+      instance_name: net_thinner
+    epochs: [0]
 
   # - quantizer:
   #     instance_name: dorefa_quantizer
