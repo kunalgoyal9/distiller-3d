@@ -122,7 +122,7 @@ pruners:
   
       # module.s2.pathway0_res0.branch1.weight,
       
-      # module.s2.pathway0_res0.branch2.a.weight,
+      module.s2.pathway0_res0.branch2.a.weight,
       # module.s2.pathway0_res0.branch2.b.weight,
       # # module.s2.pathway0_res0.branch2.c.weight,
 
