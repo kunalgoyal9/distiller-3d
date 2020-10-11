@@ -244,7 +244,7 @@ extensions:
 lr_schedulers:
    exp_finetuning_lr:
      class: ExponentialLR
-     gamma: 0.9
+     gamma: 0.6
     #  step_size: 4
 
 
