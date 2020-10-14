@@ -608,19 +608,15 @@ def train(train_loader, model, criterion, optimizer, epoch,
     # print("Hello my friend")
 
     # calculate flops
-
-    print(model)
-
     # from pthflops import count_ops
+    from thop import profile
+
     inp = torch.rand(1, 3 ,16 ,122 ,122).to(args.device)
     
     print(inp)
-    model = model.to(args.device)
+    # model = model.to(args.device)
 
-    from thop import profile
-
-    flops = profile(model, inp)
-    print("flops: ", flops)
+    
 
     for train_step, (inputs, target) in enumerate(train_loader):
 
@@ -635,7 +631,10 @@ def train(train_loader, model, criterion, optimizer, epoch,
             inputs[0], target = inputs[0].to(args.device), target.to(args.device)
         else:
             inputs, target = inputs.to(args.device), target.to(args.device)            
-        
+
+        flops = profile(model, inputs)
+        print("flops: ", flops)
+
         # Execute the forward phase, compute the output and measure loss
         if compression_scheduler:
             compression_scheduler.on_minibatch_begin(epoch, train_step, steps_per_epoch, optimizer)
