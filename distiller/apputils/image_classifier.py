@@ -612,7 +612,7 @@ def train(train_loader, model, criterion, optimizer, epoch,
     print(model)
 
     # from pthflops import count_ops
-    inp = torch.rand(1, 3 ,16 ,122 ,122)
+    inp = torch.rand(1, 3 ,16 ,122 ,122).to(device='cuda')
 
     from thop import profile
 
