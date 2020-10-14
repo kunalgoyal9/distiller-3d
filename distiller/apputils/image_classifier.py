@@ -613,7 +613,10 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
     # from pthflops import count_ops
     inp = torch.rand(1, 3 ,16 ,122 ,122).to(device='cuda')
+    
     print(inp)
+    model = model.to("cuda")
+    
     from thop import profile
 
     flops = profile(model, inp)
