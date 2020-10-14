@@ -609,7 +609,7 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
     # calculate flops
     from pthflops import count_ops
-    inp = torch.rand(3,16,122,122)
+    inp = torch.rand(1, 3 ,16 ,122 ,122)
 
     flops = count_ops(model, inp)
     print("flops: ", flops)
