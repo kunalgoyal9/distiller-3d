@@ -444,6 +444,7 @@ def _init_learner(args):
         model.to(args.device)
     elif compression_scheduler is None:
         compression_scheduler = distiller.CompressionScheduler(model)
+    
 
     return model, compression_scheduler, optimizer, start_epoch, args.epochs
 
@@ -606,10 +607,17 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
     # print("Hello my friend")
 
+    # calculate flops
+    # from pthflops import count_ops
+
+    # count_ops(model, inp)
+
     for train_step, (inputs, target) in enumerate(train_loader):
 
         # Measure data loading time
         data_time.add(time.time() - end)
+
+        print("input shape: ", inputs[0].shape)
         
         if args.dataset == 'slowfast_ucf101':
             inputs[0], inputs[1], target = inputs[0].to(args.device), inputs[1].to(args.device), target.to(args.device)
