@@ -608,10 +608,15 @@ def train(train_loader, model, criterion, optimizer, epoch,
     # print("Hello my friend")
 
     # calculate flops
-    from pthflops import count_ops
+
+    print(model)
+
+    # from pthflops import count_ops
     inp = torch.rand(1, 3 ,16 ,122 ,122)
 
-    flops = count_ops(model, inp)
+    from thop import profile
+
+    flops = profile(model, inp)
     print("flops: ", flops)
 
     for train_step, (inputs, target) in enumerate(train_loader):
