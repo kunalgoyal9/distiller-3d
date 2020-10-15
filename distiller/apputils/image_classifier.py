@@ -624,8 +624,9 @@ def train(train_loader, model, criterion, optimizer, epoch,
     # flops = profile(model, inputs)
     # print("flops: ", flops)
 
-    n_params = get_n_params(model)
-    print("*" * 10, n_params, "*" * 10)
+    # printing number of parameters in the model
+    # n_params = get_n_params(model)
+    # print("*" * 10, n_params, "*" * 10)
 
     for train_step, (inputs, target) in enumerate(train_loader):
 
@@ -706,8 +707,9 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
         end = time.time()
 
-        n_params_pruned = get_n_params(model)
-        print("*" * 10, n_params_pruned, "*" * 10)
+        # printing number of pruned parameters
+        # n_params_pruned = get_n_params(model)
+        # print("*" * 10, n_params_pruned, "*" * 10)
         
         # if train_step == 5:
         #     import sys
