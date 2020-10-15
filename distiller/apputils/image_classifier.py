@@ -333,6 +333,14 @@ def init_classifier_compression_arg_parser(include_ptq_lapq_args=False):
     distiller.quantization.add_post_train_quant_args(parser, add_lapq_args=include_ptq_lapq_args)
     return parser
 
+def get_n_params(model):
+    pp=0
+    for p in list(model.parameters()):
+        nn=1
+        for s in list(p.size()):
+            nn = nn*s
+        pp += nn
+    return pp
 
 def _init_logger(args, script_dir):
     global msglogger
@@ -603,20 +611,21 @@ def train(train_loader, model, criterion, optimizer, epoch,
     
     first_chk = True
 
-    # print("train_loader: ", train_loader)
-
-    # print("Hello my friend")
-
     # calculate flops
-    # from pthflops import count_ops
-    from thop import profile
 
-    inp = torch.rand(1, 3 ,16 ,122 ,122).to(args.device)
+    # from pthflops import count_ops
+    # from thop import profile
+
+    # inp = torch.rand(1, 3 ,16 ,122 ,122).to(args.device)
     
-    print(inp)
+    # print(inp)
     # model = model.to(args.device)
 
-    
+    # flops = profile(model, inputs)
+    # print("flops: ", flops)
+
+    n_params = get_n_params(model)
+    print("*" * 10, n_params, "*" * 10)
 
     for train_step, (inputs, target) in enumerate(train_loader):
 
@@ -631,9 +640,6 @@ def train(train_loader, model, criterion, optimizer, epoch,
             inputs[0], target = inputs[0].to(args.device), target.to(args.device)
         else:
             inputs, target = inputs.to(args.device), target.to(args.device)            
-
-        flops = profile(model, inputs)
-        print("flops: ", flops)
 
         # Execute the forward phase, compute the output and measure loss
         if compression_scheduler:
